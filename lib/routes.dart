@@ -13,7 +13,7 @@ final GoRouter drinkAppRouter = GoRouter(
       name: DrinkAppRoutes.homeView,
       builder: (context, state) {
         return HomeView();
-      },
+      }
     )
   ]
 );
