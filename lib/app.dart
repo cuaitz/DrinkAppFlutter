@@ -1,6 +1,5 @@
 import 'package:drink_app_flutter/routes.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class DrinkApp extends StatefulWidget {
   const DrinkApp({super.key});

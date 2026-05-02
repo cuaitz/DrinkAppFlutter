@@ -2,40 +2,47 @@ import 'package:drink_app_flutter/routes.dart';
 import 'package:drink_app_flutter/view/components/drink_button.dart';
 import 'package:drink_app_flutter/view/components/drink_text_field.dart';
 import 'package:drink_app_flutter/view/default_view.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class LoginView extends StatefulWidget {
-  const LoginView({super.key});
+class RegisterView extends StatefulWidget {
+  const RegisterView({super.key});
 
   @override
-  State<LoginView> createState() => _LoginViewState();
+  State<RegisterView> createState() => _RegisterViewState();
 }
 
-class _LoginViewState extends State<LoginView> {
+class _RegisterViewState extends State<RegisterView> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
 
-  void _onLogin() {
-    // TO-DO: Implementar a lógica de login
+  void _onRegister() {
+    // TO-DO: Implementar a lógica de registro
 
+    String name = _nameController.text;
     String email = _emailController.text;
     String password = _passwordController.text;
 
-    print("Email: $email, Password: $password");
+    print("Name: $name, Email: $email, Password: $password");
   }
 
   @override
   Widget build(BuildContext context) {
     return DefaultView(
-      title: "Login",
+      title: "Register",
       body: Center(
         child: Column(
           children: [
-            Text("Login"),
-            Text("This is the login page"),
+            Text("Register"),
+            Text("Very cool register page"),
             DrinkTextField(
-              hintText: "Username",
+              hintText: "Name",
+              controller: _nameController,
+            ),
+            DrinkTextField(
+              hintText: "Email",
               controller: _emailController,
             ),
             DrinkTextField(
@@ -43,7 +50,7 @@ class _LoginViewState extends State<LoginView> {
               controller: _passwordController,
               obscureText: true,
             ),
-            DrinkButton(text: 'Login', onPressed: _onLogin)
+            DrinkButton(text: 'Register', onPressed: _onRegister)
           ]
         )
       ),
