@@ -12,15 +12,11 @@ class DrinkApp extends StatefulWidget {
 class _DrinkAppState extends State<DrinkApp> {
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-
-      ],
-      child: MaterialApp.router(
-        routerConfig: drinkAppRouter,
-        title: "DrinkApp",
-        debugShowCheckedModeBanner: false,
-      )
+    // TO-DO: Adicionar os provider aqui no futuro
+    return MaterialApp.router(
+      routerConfig: drinkAppRouter,
+      title: "DrinkApp",
+      debugShowCheckedModeBanner: false,
     );
   }
 }
