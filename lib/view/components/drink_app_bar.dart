@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class DrinkAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final String title;
+  final String? title;
   const DrinkAppBar({super.key, this.title = 'DrinkApp'});
 
   @override
@@ -10,7 +10,7 @@ class DrinkAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: const Text('DrinkApp'),
+      title: Text(title ?? 'DrinkApp'),
     );
   }
 }

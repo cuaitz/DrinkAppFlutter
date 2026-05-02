@@ -1,5 +1,6 @@
 import 'package:drink_app_flutter/view/components/drink_app_bar.dart';
 import 'package:drink_app_flutter/view/components/drink_button.dart';
+import 'package:drink_app_flutter/view/default_view.dart';
 import 'package:flutter/material.dart';
 
 class HomeView extends StatelessWidget {
@@ -7,8 +8,8 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: DrinkAppBar(),
+    return DefaultView(
+      title: "DrinkApp",
       body: Center(
         child: Column(
           children: [
