@@ -24,6 +24,7 @@ class _HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
     return DefaultView(
       title: "DrinkApp",
+      showBottomAppBar: false,
       body: Center(
         child: Column(
           children: [

@@ -29,6 +29,7 @@ class _RegisterViewState extends State<RegisterView> {
   Widget build(BuildContext context) {
     return DefaultView(
       title: "Register",
+      showBottomAppBar: false,
       body: Center(
         child: Column(
           children: [

@@ -31,6 +31,7 @@ class _LoginViewState extends State<LoginView> {
   Widget build(BuildContext context) {
     return DefaultView(
       title: "Login",
+      showBottomAppBar: false,
       body: Center(
         child: Column(
           children: [
