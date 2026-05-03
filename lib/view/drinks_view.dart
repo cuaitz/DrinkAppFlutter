@@ -1,7 +1,9 @@
 import 'package:drink_app_flutter/model/drink.dart';
+import 'package:drink_app_flutter/routes.dart';
 import 'package:drink_app_flutter/view/components/drink_text_field.dart';
 import 'package:drink_app_flutter/view/default_view.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class DrinksView extends StatefulWidget {
   const DrinksView({super.key});
@@ -33,6 +35,7 @@ class _DrinksViewState extends State<DrinksView> {
 
   void _onDrinkTapped(Drink drink) {
     print("Tapped ${drink.name} (ID: ${drink.id})");
+    GoRouter.of(context).pushNamed(DrinkAppRoutes.drinkDetailsView, pathParameters: {'id': drink.id.toString()});
   }
 
   @override

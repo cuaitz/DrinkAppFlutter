@@ -1,3 +1,4 @@
+import 'package:drink_app_flutter/view/drink_details.dart';
 import 'package:drink_app_flutter/view/drinks_view.dart';
 import 'package:drink_app_flutter/view/home_view.dart';
 import 'package:drink_app_flutter/view/login_view.dart';
@@ -9,6 +10,7 @@ class DrinkAppRoutes {
   static const String loginView = '/login';
   static const String registerView = '/register';
   static const String drinksView = '/drinks';
+  static const String drinkDetailsView = '/drink_details/:id';
 }
 
 final GoRouter drinkAppRouter = GoRouter(
@@ -40,6 +42,13 @@ final GoRouter drinkAppRouter = GoRouter(
       name: DrinkAppRoutes.drinksView,
       builder: (context, state) {
         return DrinksView();
+      }
+    ),
+    GoRoute(
+      path: DrinkAppRoutes.drinkDetailsView,
+      name: DrinkAppRoutes.drinkDetailsView,
+      builder: (context, state) {
+        return DrinkDetailsView(drinkId: int.parse(state.pathParameters['id'] ?? '0'));
       }
     ),
   ]
