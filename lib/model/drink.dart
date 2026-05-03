@@ -24,7 +24,7 @@ class Drink {
   final String? ingredient14;
   final String? ingredient15;
 
-  List<String?> ingredients;
+  List<String?> ingredients = [];
 
   final String? measure1;
   final String? measure2;
@@ -42,7 +42,7 @@ class Drink {
   final String? measure14;
   final String? measure15;
 
-  List<String?> measures;
+  List<String?> measures = [];
 
   final DateTime createdAt;
   final DateTime updatedAt;
@@ -218,5 +218,123 @@ class Drink {
       'updated_at': updatedAt.toIso8601String(),
       'deleted_at': deletedAt?.toIso8601String(),
     };
+  }
+
+  //! TO-DO: Remover quando a API de vdd entrar
+  //! TO-DO: Criar uma lista dos 100 coquetéis 
+  //! mais populares e deixar salva localmente?
+  static List<Drink> getMockDrinks() {
+    return [
+      Drink(
+        id: 1,
+        name: "Mojito",
+        category: "Cocktail",
+        glass: "Highball glass",
+        instructions: "Muddle mint leaves with sugar and lime juice. Add a splash of soda water and fill the glass with cracked ice. Pour the rum and top with soda water. Garnish and serve with straw.",
+        thumbnail: "https://www.thecocktaildb.com/images/media/drink/metwgh1606770327.jpg",
+        ingredient1: "Light rum",
+        ingredient2: "Lime",
+        ingredient3: "Sugar",
+        ingredient4: "Mint",
+        ingredient5: "Soda water",
+        measure1: "2-3 oz ",
+        measure2: "Juice of 1 ",
+        measure3: "2 tsp ",
+        measure4: "2-4 ",
+        measure5: "Top up with",
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now()
+      ),
+      Drink(
+        id: 2,
+        name: "Old Fashioned",
+        category: "Cocktail",
+        glass: "Old-fashioned glass",
+        instructions: "Place sugar cube in old fashioned glass and saturate with bitters, add a dash of plain water. Muddle until dissolved. Fill the glass with ice cubes and add whiskey. Garnish with orange slice and a cocktail cherry.",
+        thumbnail: "https://www.thecocktaildb.com/images/media/drink/vrwquq1478252802.jpg",
+        ingredient1: "Bourbon",
+        ingredient2: "Angostura bitters",
+        ingredient3: "Sugar",
+        ingredient4: "Water",
+        measure1: "4.5 cL ",
+        measure2: "2 dashes ",
+        measure3: "1 cube ",
+        measure4: "dash",
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now()
+      ),
+
+      Drink(
+        id: 3,
+        name: "Margarita",
+        category: "Cocktail",
+        glass: "Cocktail glass",
+        instructions: "Rub the rim with lime slice to make the salt stick. Shake ingredients with ice, strain into the glass.",
+        thumbnail: "https://example.com/margarita.jpg",
+        ingredient1: "Tequila",
+        ingredient2: "Triple sec",
+        ingredient3: "Lime juice",
+        ingredient4: "Salt",
+        measure1: "2 oz ",
+        measure2: "1 oz ",
+        measure3: "1 oz ",
+        measure4: "Pinch",
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now()
+      ),
+
+      Drink(
+        id: 4,
+        name: "Piña Colada",
+        category: "Cocktail",
+        glass: "Hurricane glass",
+        instructions: "Blend all ingredients with ice until smooth. Pour into glass and garnish.",
+        thumbnail: "https://example.com/pinacolada.jpg",
+        ingredient1: "White rum",
+        ingredient2: "Coconut cream",
+        ingredient3: "Pineapple juice",
+        measure1: "2 oz ",
+        measure2: "2 oz ",
+        measure3: "4 oz ",
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now()
+      ),
+
+      Drink(
+        id: 5,
+        name: "Negroni",
+        category: "Cocktail",
+        glass: "Old-fashioned glass",
+        instructions: "Stir into glass over ice, garnish and serve.",
+        thumbnail: "https://example.com/negroni.jpg",
+        ingredient1: "Gin",
+        ingredient2: "Campari",
+        ingredient3: "Sweet vermouth",
+        measure1: "1 oz ",
+        measure2: "1 oz ",
+        measure3: "1 oz ",
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now()
+      ),
+
+      Drink(
+        id: 6,
+        name: "Espresso Martini",
+        category: "Cocktail",
+        glass: "Cocktail glass",
+        instructions: "Shake all ingredients with ice, strain into chilled glass.",
+        thumbnail: "https://example.com/espresso_martini.jpg",
+        ingredient1: "Vodka",
+        ingredient2: "Espresso",
+        ingredient3: "Coffee liqueur",
+        ingredient4: "Sugar syrup",
+        measure1: "1.5 oz ",
+        measure2: "1 oz ",
+        measure3: "0.5 oz ",
+        measure4: "0.5 oz ",
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now()
+      ),
+    ];
   }
 }
