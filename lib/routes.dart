@@ -1,4 +1,4 @@
-import 'package:drink_app_flutter/view/drink_details.dart';
+import 'package:drink_app_flutter/view/drink_details_view.dart';
 import 'package:drink_app_flutter/view/drinks_view.dart';
 import 'package:drink_app_flutter/view/home_view.dart';
 import 'package:drink_app_flutter/view/login_view.dart';
