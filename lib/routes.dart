@@ -53,8 +53,8 @@ final GoRouter drinkAppRouter = GoRouter(
       }
     ),
     GoRoute(
-      path: DrinkAppRoutes.drinksView,
-      name: DrinkAppRoutes.drinksView,
+      path: DrinkAppRoutes.myDrinksView,
+      name: DrinkAppRoutes.myDrinksView,
       builder: (context, state) {
         return DrinksView(ownDrinks: true);
       }
