@@ -96,7 +96,6 @@ class _DrinkDetailsViewState extends State<DrinkDetailsView> {
       body: Center(
         child: SingleChildScrollView(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _getImage(),
