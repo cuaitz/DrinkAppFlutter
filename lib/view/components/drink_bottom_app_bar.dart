@@ -37,7 +37,7 @@ class DrinkBottomAppBar extends StatelessWidget {
             GoRouter.of(context).go(DrinkAppRoutes.myDrinksView);
           }),
           _buildItem(Icons.person_outline, 'Profile', () {
-            print('right');
+            GoRouter.of(context).go(DrinkAppRoutes.myProfileView);
           })
         ],
       )

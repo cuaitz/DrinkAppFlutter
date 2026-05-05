@@ -40,4 +40,16 @@ class User {
       'deleted_at': deletedAt?.toIso8601String(),
     };
   }
+
+  static User getMockUser() {
+    return User(
+      id: 1,
+      name: 'John Doe',
+      email: 'example@example.com',
+      password: 'password123',
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
+      deletedAt: null,
+    );
+  }
 }
