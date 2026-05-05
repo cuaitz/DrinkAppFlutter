@@ -34,14 +34,14 @@ class _DrinkDetailsViewState extends State<DrinkDetailsView> {
 
     Widget content;
 
-    if (_drink == null || _drink!.thumbnail == null || _drink!.thumbnail!.isEmpty) {
-      content = Icon(Icons.local_drink_outlined, size: size);
-    } else {
+    if (_drink?.thumbnail != null && _drink!.thumbnail!.isNotEmpty) {
       content = Image.network(
         _drink!.thumbnail!,
         fit: BoxFit.cover,
         errorBuilder: (_, _, _) => Icon(Icons.local_drink_outlined, size: size),
       );
+    } else {
+      content = Icon(Icons.local_drink_outlined, size: size);
     }
 
     return Center(
