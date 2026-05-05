@@ -55,29 +55,31 @@ class _DrinksViewState extends State<DrinksView> {
     return DefaultView(
       title: widget.ownDrinks ? 'My Drinks' : 'Drinks',
       body: Center(
-        child: Column(
-          children: [
-            DrinkTextField(
-              controller: _filterController,
-              hintText: "Filter by name, tags, category, ingredients, etc.",
-              labelText: "Search for drinks",
-              onChanged: _onFilterChanged,
-            ),
-            ListView.builder(
-              shrinkWrap: true,
-              itemCount: _filteredDrinks.length,
-              itemBuilder: (context, index) {
-                final Drink drink = _filteredDrinks[index];
-                return ListTile(
-                  title: Text(drink.name),
-                  subtitle: Text(drink.category ?? 'No category'),
-                  onTap: () {
-                    _onDrinkTapped(drink);
-                  },
-                );
-              }
-            )
-          ]
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              DrinkTextField(
+                controller: _filterController,
+                hintText: "Filter by name, tags, category, ingredients, etc.",
+                labelText: "Search for drinks",
+                onChanged: _onFilterChanged,
+              ),
+              ListView.builder(
+                shrinkWrap: true,
+                itemCount: _filteredDrinks.length,
+                itemBuilder: (context, index) {
+                  final Drink drink = _filteredDrinks[index];
+                  return ListTile(
+                    title: Text(drink.name),
+                    subtitle: Text(drink.category ?? 'No category'),
+                    onTap: () {
+                      _onDrinkTapped(drink);
+                    },
+                  );
+                }
+              )
+            ]
+          ),
         )
       )
     );
