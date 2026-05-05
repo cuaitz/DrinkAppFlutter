@@ -135,8 +135,10 @@ class _ManageDrinkViewState extends State<ManageDrinkView> {
         _measureControllers.add(TextEditingController(text: _drink!.measures[i]));
       }
     } else {
-      _ingredientControllers.add(TextEditingController());
-      _measureControllers.add(TextEditingController());
+      for (int i = 0; i < 15; i++) {
+        _ingredientControllers.add(TextEditingController());
+        _measureControllers.add(TextEditingController());
+      }
     }
   }
 
