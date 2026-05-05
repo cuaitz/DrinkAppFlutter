@@ -6,7 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class DrinksView extends StatefulWidget {
-  const DrinksView({super.key});
+  final bool ownDrinks;
+  const DrinksView({super.key, required this.ownDrinks});
 
   @override
   State<DrinksView> createState() => _DrinksViewState();
@@ -43,7 +44,8 @@ class _DrinksViewState extends State<DrinksView> {
     super.initState();
 
     setState(() {
-      _drinks = Drink.getMockDrinks();
+      //! TO-DO: Adicionar a lógica para pegar as bebidas do usuário logado
+      _drinks = widget.ownDrinks ? Drink.getMockDrinks() : Drink.getMockDrinks();
       _filteredDrinks = _drinks;
     });
   }
@@ -51,7 +53,7 @@ class _DrinksViewState extends State<DrinksView> {
   @override
   Widget build(BuildContext context) {
     return DefaultView(
-      title: 'Drinks',
+      title: widget.ownDrinks ? 'My Drinks' : 'Drinks',
       body: Center(
         child: Column(
           children: [

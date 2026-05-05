@@ -1,4 +1,6 @@
+import 'package:drink_app_flutter/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class DrinkBottomAppBar extends StatelessWidget {
   const DrinkBottomAppBar({super.key});
@@ -29,10 +31,10 @@ class DrinkBottomAppBar extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           _buildItem(Icons.local_drink_outlined, 'Cocktails', () {
-            print('left');
+            GoRouter.of(context).go(DrinkAppRoutes.drinksView);
           }),
           _buildItem(Icons.water_drop_outlined, 'My Drinks', () {
-            print('center');
+            GoRouter.of(context).go(DrinkAppRoutes.myDrinksView);
           }),
           _buildItem(Icons.person_outline, 'Profile', () {
             print('right');

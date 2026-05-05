@@ -11,6 +11,7 @@ class DrinkAppRoutes {
   static const String registerView = '/register';
   static const String drinksView = '/drinks';
   static const String drinkDetailsView = '/drink_details/:id';
+  static const String myDrinksView = '/my_drinks';
 }
 
 final GoRouter drinkAppRouter = GoRouter(
@@ -41,7 +42,7 @@ final GoRouter drinkAppRouter = GoRouter(
       path: DrinkAppRoutes.drinksView,
       name: DrinkAppRoutes.drinksView,
       builder: (context, state) {
-        return DrinksView();
+        return DrinksView(ownDrinks: false);
       }
     ),
     GoRoute(
@@ -49,6 +50,13 @@ final GoRouter drinkAppRouter = GoRouter(
       name: DrinkAppRoutes.drinkDetailsView,
       builder: (context, state) {
         return DrinkDetailsView(drinkId: int.parse(state.pathParameters['id'] ?? '0'));
+      }
+    ),
+    GoRoute(
+      path: DrinkAppRoutes.drinksView,
+      name: DrinkAppRoutes.drinksView,
+      builder: (context, state) {
+        return DrinksView(ownDrinks: true);
       }
     ),
   ]
