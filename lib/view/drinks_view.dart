@@ -81,7 +81,13 @@ class _DrinksViewState extends State<DrinksView> {
             ]
           ),
         )
-      )
+      ),
+      floatingActionButton: widget.ownDrinks ? FloatingActionButton(
+        onPressed: () {
+          print('Add new drink');
+        },
+        child: const Icon(Icons.add),
+      ) : null,
     );
   }
 }

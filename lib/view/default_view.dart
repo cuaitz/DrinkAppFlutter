@@ -6,8 +6,9 @@ class DefaultView extends StatelessWidget {
   final String? title;
   final Widget? body;
   final bool showBottomAppBar;
+  final FloatingActionButton? floatingActionButton;
 
-  const DefaultView({super.key, this.title, this.body, this.showBottomAppBar = true});
+  const DefaultView({super.key, this.title, this.body, this.showBottomAppBar = true, this.floatingActionButton});
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +21,7 @@ class DefaultView extends StatelessWidget {
         )
       ),
       bottomNavigationBar: showBottomAppBar ? DrinkBottomAppBar() : null,
+      floatingActionButton: floatingActionButton,
     );
   }
 }
