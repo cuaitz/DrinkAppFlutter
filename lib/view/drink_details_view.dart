@@ -1,6 +1,8 @@
 import 'package:drink_app_flutter/model/drink.dart';
+import 'package:drink_app_flutter/routes.dart';
 import 'package:drink_app_flutter/view/default_view.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class DrinkDetailsView extends StatefulWidget {
   final int drinkId;
@@ -12,6 +14,7 @@ class DrinkDetailsView extends StatefulWidget {
 
 class _DrinkDetailsViewState extends State<DrinkDetailsView> {
   Drink? _drink;
+  bool _isOwner = true; //! TO-DO: Adicionar a lógica para verificar se o drink pertence ao usuário logado
 
   @override
   void initState() {
@@ -107,6 +110,12 @@ class _DrinkDetailsViewState extends State<DrinkDetailsView> {
           ),
         ),
       ),
+      floatingActionButton: _isOwner ? FloatingActionButton(
+        onPressed: () {
+          GoRouter.of(context).pushNamed(DrinkAppRoutes.manageDrinkView, queryParameters: {'id': _drink!.id.toString()});
+        },
+        child: const Icon(Icons.edit),
+      ) : null,
     );
   }
 }

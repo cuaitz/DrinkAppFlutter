@@ -2,6 +2,7 @@ import 'package:drink_app_flutter/view/drink_details_view.dart';
 import 'package:drink_app_flutter/view/drinks_view.dart';
 import 'package:drink_app_flutter/view/home_view.dart';
 import 'package:drink_app_flutter/view/login_view.dart';
+import 'package:drink_app_flutter/view/manage_drink_view.dart';
 import 'package:drink_app_flutter/view/register_view.dart';
 import 'package:go_router/go_router.dart';
 
@@ -12,6 +13,7 @@ class DrinkAppRoutes {
   static const String drinksView = '/drinks';
   static const String drinkDetailsView = '/drink_details/:id';
   static const String myDrinksView = '/my_drinks';
+  static const String manageDrinkView = '/manage_drink';
 }
 
 final GoRouter drinkAppRouter = GoRouter(
@@ -57,6 +59,14 @@ final GoRouter drinkAppRouter = GoRouter(
       name: DrinkAppRoutes.myDrinksView,
       builder: (context, state) {
         return DrinksView(ownDrinks: true);
+      }
+    ),
+    GoRoute(
+      path: DrinkAppRoutes.manageDrinkView,
+      name: DrinkAppRoutes.manageDrinkView,
+      builder: (context, state) {
+        int? id = state.uri.queryParameters['id'] != null ? int.tryParse(state.uri.queryParameters['id']!) : null;
+        return ManageDrinkView(drinkId: id);
       }
     ),
   ]
