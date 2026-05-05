@@ -144,6 +144,7 @@ class _ManageDrinkViewState extends State<ManageDrinkView> {
 
   //! TO-DO: Fazer o fetch do drink real aqui
   Future<Drink> _getDrink(int drinkId) async {
+    await Future.delayed(Duration(seconds: 2)); //! TO-DO: TIRAR ISSO DEPOIS
     return Drink.getMockDrinks().firstWhere((drink) => drink.id == drinkId);
   }
 

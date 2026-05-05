@@ -17,6 +17,7 @@ class _MyProfileViewState extends State<MyProfileView> {
 
   //! TO-DO: Fazer o fetch do user real aqui
   Future<User> _getCurrentUser() async {
+    await Future.delayed(Duration(seconds: 2)); //! TO-DO: TIRAR ISSO DEPOIS
     return User.getMockUser();
   }
 
