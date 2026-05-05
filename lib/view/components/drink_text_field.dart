@@ -26,7 +26,7 @@ class DrinkTextField extends StatelessWidget {
       onChanged: onChanged,
       readOnly: readOnly,
       obscureText: obscureText,
-      maxLines: maxLines,
+      maxLines: maxLines ?? 1,
     );
   }
 }
