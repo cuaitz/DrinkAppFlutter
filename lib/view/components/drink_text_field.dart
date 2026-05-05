@@ -8,8 +8,9 @@ class DrinkTextField extends StatelessWidget {
   final void Function(String)? onChanged;
   final bool readOnly;
   final bool obscureText;
+  final int? maxLines;
 
-  const DrinkTextField({super.key, this.controller, this.hintText, this.labelText, this.enabled, this.onChanged, this.readOnly = false, this.obscureText = false});
+  const DrinkTextField({super.key, this.controller, this.hintText, this.labelText, this.enabled, this.onChanged, this.readOnly = false, this.obscureText = false, this.maxLines});
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +26,7 @@ class DrinkTextField extends StatelessWidget {
       onChanged: onChanged,
       readOnly: readOnly,
       obscureText: obscureText,
+      maxLines: maxLines,
     );
   }
 }
