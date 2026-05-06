@@ -15,6 +15,8 @@ class _DrinkAppState extends State<DrinkApp> {
     // TO-DO: Adicionar os provider aqui no futuro
     return MaterialApp.router(
       theme: DrinkAppTheme.dark(),
+      darkTheme: DrinkAppTheme.light(),
+      themeMode: ThemeMode.dark,
       routerConfig: drinkAppRouter,
       title: "DrinkApp",
       debugShowCheckedModeBanner: false,
