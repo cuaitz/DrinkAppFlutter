@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 class DrinkBottomAppBar extends StatelessWidget {
   const DrinkBottomAppBar({super.key});
 
-  Widget _buildItem(IconData icon, String label, void Function()? onTap) {
+  Widget _buildItem(BuildContext context, IconData icon, String label, void Function()? onTap) {
     return InkWell(
       onTap: onTap,
       child: Padding(
@@ -15,7 +15,7 @@ class DrinkBottomAppBar extends StatelessWidget {
           children: [
             Icon(icon),
             const SizedBox(height: 4),
-            Text(label, style: const TextStyle(fontSize: 12)),
+            Text(label, style: Theme.of(context).textTheme.bodyMedium),
           ],
         ),
       ),
@@ -25,18 +25,18 @@ class DrinkBottomAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomAppBar(
-      height: 90,
+      height: 100,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          _buildItem(Icons.local_drink_outlined, 'Cocktails', () {
+          _buildItem(context, Icons.local_drink_outlined, 'Cocktails', () {
             GoRouter.of(context).go(DrinkAppRoutes.drinksView);
           }),
-          _buildItem(Icons.water_drop_outlined, 'My Drinks', () {
+          _buildItem(context, Icons.water_drop_outlined, 'My Drinks', () {
             GoRouter.of(context).go(DrinkAppRoutes.myDrinksView);
           }),
-          _buildItem(Icons.person_outline, 'Profile', () {
+          _buildItem(context, Icons.person_outline, 'Profile', () {
             GoRouter.of(context).go(DrinkAppRoutes.myProfileView);
           })
         ],

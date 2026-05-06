@@ -33,8 +33,8 @@ class _RegisterViewState extends State<RegisterView> {
       body: Center(
         child: Column(
           children: [
-            Text("Register"),
-            Text("Very cool register page"),
+            Text("Register", style: Theme.of(context).textTheme.titleLarge),
+            Text("Very cool register page", style: Theme.of(context).textTheme.titleMedium),
             DrinkTextField(
               hintText: "Name",
               controller: _nameController,

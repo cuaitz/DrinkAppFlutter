@@ -74,7 +74,7 @@ class _DrinkDetailsViewState extends State<DrinkDetailsView> {
       String? measure = _drink!.measures[i];
 
       if (ingredient != null && ingredient.isNotEmpty && measure != null && measure.isNotEmpty) {
-        ingredients.add(Text("- $ingredient ($measure)"));
+        ingredients.add(Text("- $ingredient ($measure)", style: Theme.of(context).textTheme.bodyMedium));
       }
     }
 
@@ -100,11 +100,11 @@ class _DrinkDetailsViewState extends State<DrinkDetailsView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _getImage(),
-              Text("Name: ${_drink!.name}"),
-              Text("Category: ${_drink!.category ?? "Unknown"}"),
-              Text("Glass: ${_drink!.glass ?? "Unknown"}"),
-              Text("Instructions: ${_drink!.instructions ?? "Unknown"}"),
-              Text("Ingredients:"),
+              Text("Name: ${_drink!.name}", style: Theme.of(context).textTheme.titleLarge),
+              Text("Category: ${_drink!.category ?? "Unknown"}", style: Theme.of(context).textTheme.titleMedium),
+              Text("Glass: ${_drink!.glass ?? "Unknown"}", style: Theme.of(context).textTheme.titleMedium),
+              Text("Instructions: ${_drink!.instructions ?? "Unknown"}", style: Theme.of(context).textTheme.bodyMedium),
+              Text("Ingredients:", style: Theme.of(context).textTheme.bodyMedium),
               ..._getValidIngredients()
             ],
           ),

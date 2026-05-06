@@ -10,7 +10,7 @@ class DrinkAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Text(title ?? 'DrinkApp'),
+      title: Text(title ?? 'DrinkApp', style: Theme.of(context).textTheme.titleLarge)
     );
   }
 }

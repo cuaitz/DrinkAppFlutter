@@ -14,19 +14,22 @@ class DrinkTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      decoration: InputDecoration(
-        hintText: hintText,
-        labelText: labelText,
-        border: OutlineInputBorder(),
-
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: TextFormField(
+        decoration: InputDecoration(
+          hintText: hintText,
+          labelText: labelText,
+          border: OutlineInputBorder(),
+        ),
+        style: Theme.of(context).textTheme.bodyMedium,
+        controller: controller,
+        enabled: enabled,
+        onChanged: onChanged,
+        readOnly: readOnly,
+        obscureText: obscureText,
+        maxLines: maxLines ?? 1,
       ),
-      controller: controller,
-      enabled: enabled,
-      onChanged: onChanged,
-      readOnly: readOnly,
-      obscureText: obscureText,
-      maxLines: maxLines ?? 1,
     );
   }
 }

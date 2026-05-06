@@ -70,8 +70,8 @@ class _DrinksViewState extends State<DrinksView> {
                 itemBuilder: (context, index) {
                   final Drink drink = _filteredDrinks[index];
                   return ListTile(
-                    title: Text(drink.name),
-                    subtitle: Text(drink.category ?? 'No category'),
+                    title: Text(drink.name, style: Theme.of(context).textTheme.titleMedium,),
+                    subtitle: Text(drink.category ?? 'No category', style: Theme.of(context).textTheme.bodyMedium),
                     onTap: () {
                       _onDrinkTapped(drink);
                     },
