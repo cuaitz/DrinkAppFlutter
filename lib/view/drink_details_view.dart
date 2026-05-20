@@ -54,7 +54,7 @@ class _DrinkDetailsViewState extends State<DrinkDetailsView> {
         child: AspectRatio(
           aspectRatio: 1,
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(15),
             child: Container(
               color: Colors.grey[300],
               child: content,
