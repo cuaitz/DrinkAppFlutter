@@ -1,4 +1,5 @@
 import 'package:drink_app_flutter/routes.dart';
+import 'package:drink_app_flutter/view/components/theme.dart';
 import 'package:flutter/material.dart';
 
 class DrinkApp extends StatefulWidget {
@@ -13,6 +14,9 @@ class _DrinkAppState extends State<DrinkApp> {
   Widget build(BuildContext context) {
     // TO-DO: Adicionar os provider aqui no futuro
     return MaterialApp.router(
+      theme: DrinkAppTheme.light(),
+      darkTheme: DrinkAppTheme.dark(),
+      themeMode: ThemeMode.system,
       routerConfig: drinkAppRouter,
       title: "DrinkApp",
       debugShowCheckedModeBanner: false,

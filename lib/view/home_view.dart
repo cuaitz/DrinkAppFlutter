@@ -28,8 +28,8 @@ class _HomeViewState extends State<HomeView> {
       body: Center(
         child: Column(
           children: [
-            Text("DrinkApp"),
-            Text("Very cool landing page"),
+            Text("DrinkApp", style: Theme.of(context).textTheme.titleLarge,),
+            Text("Very cool landing page", style: Theme.of(context).textTheme.bodyMedium),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

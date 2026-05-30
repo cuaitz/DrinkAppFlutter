@@ -165,7 +165,7 @@ class _ManageDrinkViewState extends State<ManageDrinkView> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Text(_drink != null ? 'Editing ${_drink!.name}' : 'Creating a new drink'),
+              Text(_drink != null ? 'Editing ${_drink!.name}' : 'Creating a new drink', style: Theme.of(context).textTheme.titleMedium),
               _getImage(),
               DrinkTextField(
                 controller: _nameController,

@@ -35,8 +35,8 @@ class _LoginViewState extends State<LoginView> {
       body: Center(
         child: Column(
           children: [
-            Text("Login"),
-            Text("This is the login page"),
+            Text("Login", style: Theme.of(context).textTheme.titleLarge),
+            Text("This is the login page", style: Theme.of(context).textTheme.titleMedium),
             DrinkTextField(
               hintText: "Username",
               controller: _emailController,

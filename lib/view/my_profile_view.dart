@@ -51,9 +51,9 @@ class _MyProfileViewState extends State<MyProfileView> {
       body: Center(
         child: Column(
           children: [
-            Text("Name: ${_user!.name}"),
-            Text("Email: ${_user!.email}"),
-            Text("Registered on: ${_user!.createdAt.toLocal()}"),
+            Text("Name: ${_user!.name}", style: Theme.of(context).textTheme.titleMedium,),
+            Text("Email: ${_user!.email}", style: Theme.of(context).textTheme.titleMedium),
+            Text("Registered on: ${_user!.createdAt.toLocal()}", style: Theme.of(context).textTheme.bodyMedium),
             DrinkButton(
               text: 'Logout',
               onPressed: _onLogout

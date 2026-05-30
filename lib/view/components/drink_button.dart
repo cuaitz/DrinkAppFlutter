@@ -9,7 +9,7 @@ class DrinkButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: onPressed,
-      child: Text(text)
+      child: Text(text, style: Theme.of(context).textTheme.bodyMedium)
     );
   }
 }
