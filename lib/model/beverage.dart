@@ -7,6 +7,7 @@ class Beverage {
   final String? strGlass;
   final String? strInstructions;
   final String? strDrinkThumb;
+  final String? strTags;
   final bool strAlcoholic;
 
   final List<BeverageIngredient> ingredients;
@@ -18,6 +19,7 @@ class Beverage {
     this.strGlass,
     this.strInstructions,
     this.strDrinkThumb,
+    this.strTags,
     required this.strAlcoholic,
     required this.ingredients,
   });
@@ -31,6 +33,7 @@ class Beverage {
       strInstructions: json['strInstructions'],
       strDrinkThumb: json['strDrinkThumb'],
       strAlcoholic: json['strAlcoholic'] ?? false,
+      strTags: json['strTags'],
       ingredients: (json['ingredients'] as List? ?? [])
           .map((e) => BeverageIngredient.fromJson(e))
           .toList(),
@@ -46,6 +49,7 @@ class Beverage {
       'strInstructions': strInstructions,
       'strDrinkThumb': strDrinkThumb,
       'strAlcoholic': strAlcoholic,
+      'strTags': strTags,
       'ingredients': ingredients.map((e) => e.toJson()).toList(),
     };
   }

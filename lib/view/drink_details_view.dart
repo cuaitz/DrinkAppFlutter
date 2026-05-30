@@ -1,4 +1,4 @@
-import 'package:drink_app_flutter/model/drink.dart';
+import 'package:drink_app_flutter/model/beverage.dart';
 import 'package:drink_app_flutter/routes.dart';
 import 'package:drink_app_flutter/view/default_view.dart';
 import 'package:flutter/material.dart';
@@ -13,34 +13,34 @@ class DrinkDetailsView extends StatefulWidget {
 }
 
 class _DrinkDetailsViewState extends State<DrinkDetailsView> {
-  Drink? _drink;
+  Beverage? _drink;
   bool _isOwner = true; //! TO-DO: Adicionar a lógica para verificar se o drink pertence ao usuário logado
 
   @override
   void initState() {
     super.initState();
 
-    _getDrink(widget.drinkId).then((drink) {
-      setState(() {
-        _drink = drink;
-      });
-    });
+    // _getDrink(widget.drinkId).then((drink) {
+    //   setState(() {
+    //     _drink = drink;
+    //   });
+    // });
   }
 
-  //! TO-DO: Fazer o fetch do drink real aqui
-  Future<Drink> _getDrink(int drinkId) async {
-    await Future.delayed(Duration(seconds: 2)); //! TO-DO: TIRAR ISSO DEPOIS
-    return Drink.getMockDrinks().firstWhere((drink) => drink.id == drinkId);
-  }
+  // //! TO-DO: Fazer o fetch do drink real aqui
+  // Future<Beverage> _getDrink(int drinkId) async {
+  //   await Future.delayed(Duration(seconds: 2)); //! TO-DO: TIRAR ISSO DEPOIS
+  //   return Beverage.getMockBeverages().firstWhere((drink) => drink.id == drinkId);
+  // }
 
   Widget _getImage() {
     final double size = MediaQuery.of(context).size.width * .5;
 
     Widget content;
 
-    if (_drink?.thumbnail != null && _drink!.thumbnail!.isNotEmpty) {
+    if (_drink?.strDrinkThumb != null && _drink!.strDrinkThumb!.isNotEmpty) {
       content = Image.network(
-        _drink!.thumbnail!,
+        _drink!.strDrinkThumb!,
         fit: BoxFit.cover,
         errorBuilder: (_, _, _) => Icon(Icons.local_drink_outlined, size: size),
       );
@@ -70,10 +70,10 @@ class _DrinkDetailsViewState extends State<DrinkDetailsView> {
 
     List<Widget> ingredients = [];
     for (int i = 1; i < _drink!.ingredients.length; i++) {
-      String? ingredient = _drink!.ingredients[i];
-      String? measure = _drink!.measures[i];
+      String? ingredient = _drink!.ingredients[i].ingredient.strIngredient;
+      String? measure = _drink!.ingredients[i].ingredientAmount;
 
-      if (ingredient != null && ingredient.isNotEmpty && measure != null && measure.isNotEmpty) {
+      if (ingredient.isNotEmpty && measure.isNotEmpty) {
         ingredients.add(Text("- $ingredient ($measure)", style: Theme.of(context).textTheme.bodyMedium));
       }
     }
@@ -93,17 +93,17 @@ class _DrinkDetailsViewState extends State<DrinkDetailsView> {
     }
     
     return DefaultView(
-      title: "Drink Details (${_drink!.name})",
+      title: "Drink Details (${_drink!.strDrink})",
       body: Center(
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _getImage(),
-              Text("Name: ${_drink!.name}", style: Theme.of(context).textTheme.titleLarge),
-              Text("Category: ${_drink!.category ?? "Unknown"}", style: Theme.of(context).textTheme.titleMedium),
-              Text("Glass: ${_drink!.glass ?? "Unknown"}", style: Theme.of(context).textTheme.titleMedium),
-              Text("Instructions: ${_drink!.instructions ?? "Unknown"}", style: Theme.of(context).textTheme.bodyMedium),
+              Text("Name: ${_drink!.strDrink}", style: Theme.of(context).textTheme.titleLarge),
+              Text("Category: ${_drink!.strCategory ?? "Unknown"}", style: Theme.of(context).textTheme.titleMedium),
+              Text("Glass: ${_drink!.strGlass ?? "Unknown"}", style: Theme.of(context).textTheme.titleMedium),
+              Text("Instructions: ${_drink!.strInstructions ?? "Unknown"}", style: Theme.of(context).textTheme.bodyMedium),
               Text("Ingredients:", style: Theme.of(context).textTheme.bodyMedium),
               ..._getValidIngredients()
             ],

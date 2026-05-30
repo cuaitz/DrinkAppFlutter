@@ -1,9 +1,11 @@
-import 'package:drink_app_flutter/model/drink.dart';
+import 'package:drink_app_flutter/model/beverage.dart';
+import 'package:drink_app_flutter/model/network/beverage_service.dart';
 import 'package:drink_app_flutter/routes.dart';
 import 'package:drink_app_flutter/view/components/drink_text_field.dart';
 import 'package:drink_app_flutter/view/default_view.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 class DrinksView extends StatefulWidget {
   final bool ownDrinks;
@@ -16,27 +18,42 @@ class DrinksView extends StatefulWidget {
 class _DrinksViewState extends State<DrinksView> {
   final TextEditingController _filterController = TextEditingController();
 
-  List<Drink> _drinks = [];
-  List<Drink> _filteredDrinks = [];
+  List<Beverage> _drinks = [];
+  List<Beverage> _filteredDrinks = [];
 
   void _onFilterChanged(String value) {
     setState(() {
       _filteredDrinks = _drinks.where((drink) {
         value = value.toLowerCase();
 
-        bool inName = drink.name.toLowerCase().contains(value);
-        bool inTags = drink.tags?.split(',').any((tag) => tag.toLowerCase().contains(value)) ?? false;
-        bool inCategory = drink.category?.toLowerCase().contains(value) ?? false;
-        bool inIngredients = drink.ingredients.any((ingredient) => ingredient?.toLowerCase().contains(value) ?? false);
+        bool inName = drink.strDrink.toLowerCase().contains(value);
+        bool inTags = drink.strTags?.split(',').any((tag) => tag.toLowerCase().contains(value)) ?? false;
+        bool inCategory = drink.strCategory?.toLowerCase().contains(value) ?? false;
+        bool inIngredients = drink.ingredients.any((ingredient) => ingredient.ingredient.strIngredient.toLowerCase().contains(value));
 
         return inName || inTags || inCategory || inIngredients;
       }).toList();
     });
   }
 
-  void _onDrinkTapped(Drink drink) {
-    print("Tapped ${drink.name} (ID: ${drink.id})");
+  void _onDrinkTapped(Beverage drink) {
+    print("Tapped ${drink.strDrink} (ID: ${drink.id})");
     GoRouter.of(context).pushNamed(DrinkAppRoutes.drinkDetailsView, pathParameters: {'id': drink.id.toString()});
+  }
+
+  void getDrinks() {
+    context.read<BeverageService>().getAll().then((drinks) {
+      setState(() {
+        _drinks = drinks;
+        _filteredDrinks = drinks;
+      });
+    }).catchError((error) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Erro ao buscar drinks: $error")),
+        );
+      }
+    });
   }
 
   @override
@@ -44,9 +61,7 @@ class _DrinksViewState extends State<DrinksView> {
     super.initState();
 
     setState(() {
-      //! TO-DO: Adicionar a lógica para pegar as bebidas do usuário logado
-      _drinks = widget.ownDrinks ? Drink.getMockDrinks() : Drink.getMockDrinks();
-      _filteredDrinks = _drinks;
+      getDrinks();
     });
   }
 
@@ -68,10 +83,10 @@ class _DrinksViewState extends State<DrinksView> {
                 shrinkWrap: true,
                 itemCount: _filteredDrinks.length,
                 itemBuilder: (context, index) {
-                  final Drink drink = _filteredDrinks[index];
+                  final Beverage drink = _filteredDrinks[index];
                   return ListTile(
-                    title: Text(drink.name, style: Theme.of(context).textTheme.titleMedium,),
-                    subtitle: Text(drink.category ?? 'No category', style: Theme.of(context).textTheme.bodyMedium),
+                    title: Text(drink.strDrink, style: Theme.of(context).textTheme.titleMedium,),
+                    subtitle: Text(drink.strCategory ?? 'No category', style: Theme.of(context).textTheme.bodyMedium),
                     onTap: () {
                       _onDrinkTapped(drink);
                     },

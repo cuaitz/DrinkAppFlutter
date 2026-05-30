@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:drink_app_flutter/model/drink.dart';
+import 'package:drink_app_flutter/model/beverage.dart';
 import 'package:drink_app_flutter/view/components/drink_button.dart';
 import 'package:drink_app_flutter/view/components/drink_text_field.dart';
 import 'package:drink_app_flutter/view/default_view.dart';
@@ -16,7 +16,7 @@ class ManageDrinkView extends StatefulWidget {
 }
 
 class _ManageDrinkViewState extends State<ManageDrinkView> {
-  Drink? _drink;
+  Beverage? _drink;
   File? _pickedImage;
 
   final ImagePicker _imagePicker = ImagePicker();
@@ -57,9 +57,9 @@ class _ManageDrinkViewState extends State<ManageDrinkView> {
           fit: BoxFit.cover
         );
       }
-    } else if (_drink?.thumbnail != null && _drink!.thumbnail!.isNotEmpty) {
+    } else if (_drink?.strDrinkThumb != null && _drink!.strDrinkThumb!.isNotEmpty) {
       content = Image.network(
-        _drink!.thumbnail!,
+        _drink!.strDrinkThumb!,
         fit: BoxFit.cover,
         errorBuilder: (_, _, _) => Icon(Icons.local_drink_outlined, size: size),
       );
@@ -112,27 +112,27 @@ class _ManageDrinkViewState extends State<ManageDrinkView> {
     super.initState();
     updateFields();
 
-    if (widget.drinkId != null) {
-      _getDrink(widget.drinkId!).then((drink) {
-        setState(() {
-          _drink = drink;
-          updateFields();
-        });
-      });
-    }
+    // if (widget.drinkId != null) {
+    //   _getDrink(widget.drinkId!).then((drink) {
+    //     setState(() {
+    //       _drink = drink;
+    //       updateFields();
+    //     });
+    //   });
+    // }
   }
 
   void updateFields() {
     if (_drink != null) {
-      _nameController.text = _drink!.name;
-      _tagsController.text = _drink!.tags ?? '';
-      _categoryController.text = _drink!.category ?? '';
-      _glassController.text = _drink!.glass ?? '';
-      _instructionsController.text = _drink!.instructions ?? '';
+      _nameController.text = _drink!.strDrink;
+      _tagsController.text = _drink!.strTags ?? '';
+      _categoryController.text = _drink!.strCategory ?? '';
+      _glassController.text = _drink!.strGlass ?? '';
+      _instructionsController.text = _drink!.strInstructions ?? '';
     
       for (int i = 0; i < _drink!.ingredients.length; i++) {
-        _ingredientControllers.add(TextEditingController(text: _drink!.ingredients[i]));
-        _measureControllers.add(TextEditingController(text: _drink!.measures[i]));
+        _ingredientControllers.add(TextEditingController(text: _drink!.ingredients[i].ingredient.strIngredient));
+        _measureControllers.add(TextEditingController(text: _drink!.ingredients[i].ingredientAmount));
       }
     } else {
       for (int i = 0; i < 15; i++) {
@@ -143,10 +143,10 @@ class _ManageDrinkViewState extends State<ManageDrinkView> {
   }
 
   //! TO-DO: Fazer o fetch do drink real aqui
-  Future<Drink> _getDrink(int drinkId) async {
-    await Future.delayed(Duration(seconds: 2)); //! TO-DO: TIRAR ISSO DEPOIS
-    return Drink.getMockDrinks().firstWhere((drink) => drink.id == drinkId);
-  }
+  // Future<Beverage> _getDrink(int drinkId) async {
+  //   await Future.delayed(Duration(seconds: 2)); //! TO-DO: TIRAR ISSO DEPOIS
+  //   return Beverage.getMockBeverages().firstWhere((drink) => drink.id == drinkId);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -160,12 +160,12 @@ class _ManageDrinkViewState extends State<ManageDrinkView> {
     }
 
     return DefaultView(
-      title: _drink != null ? 'Edit ${_drink!.name}' : 'Create New Drink',
+      title: _drink != null ? 'Edit ${_drink!.strDrink}' : 'Create New Drink',
       body: Center(
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Text(_drink != null ? 'Editing ${_drink!.name}' : 'Creating a new drink', style: Theme.of(context).textTheme.titleMedium),
+              Text(_drink != null ? 'Editing ${_drink!.strDrink}' : 'Creating a new drink', style: Theme.of(context).textTheme.titleMedium),
               _getImage(),
               DrinkTextField(
                 controller: _nameController,
