@@ -6,7 +6,7 @@ class AuthService {
   AuthService(this.client);
 
   Future<void> login(String email, String password) async {
-    final res = await client.dio.post('/login', data: {
+    final res = await client.dio.post('/api/users/login', data: {
       'email': email,
       'password': password,
     });
@@ -16,7 +16,7 @@ class AuthService {
   }
 
   Future<void> register(String email, String password, String name) async {
-    final res = await client.dio.post('/register', data: {
+    final res = await client.dio.post('/api/users/register', data: {
       'email': email,
       'password': password,
       'name': name,

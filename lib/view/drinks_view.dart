@@ -42,6 +42,7 @@ class _DrinksViewState extends State<DrinksView> {
   }
 
   void getDrinks() {
+    //! TO-DO: Botar a logica de pegar todos/só os próprios drinks
     context.read<BeverageService>().getAll().then((drinks) {
       setState(() {
         _drinks = drinks;

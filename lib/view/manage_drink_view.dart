@@ -1,11 +1,15 @@
 import 'dart:io';
 import 'package:drink_app_flutter/model/beverage.dart';
+import 'package:drink_app_flutter/model/beverage_ingredient.dart';
+import 'package:drink_app_flutter/model/ingredient.dart';
+import 'package:drink_app_flutter/model/network/beverage_service.dart';
 import 'package:drink_app_flutter/view/components/drink_button.dart';
 import 'package:drink_app_flutter/view/components/drink_text_field.dart';
 import 'package:drink_app_flutter/view/default_view.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 class ManageDrinkView extends StatefulWidget {
   final int? drinkId;
@@ -26,6 +30,7 @@ class _ManageDrinkViewState extends State<ManageDrinkView> {
   final TextEditingController _categoryController = TextEditingController();
   final TextEditingController _glassController = TextEditingController();
   final TextEditingController _instructionsController = TextEditingController();
+  final TextEditingController _alcoholicController = TextEditingController();
 
   final List<TextEditingController> _ingredientControllers = [];
   final List<TextEditingController> _measureControllers = [];
@@ -103,8 +108,41 @@ class _ManageDrinkViewState extends State<ManageDrinkView> {
   }
 
   void _saveDrink() {
-    // TO-DO: Implement the logic to save or update the drink
-    print('Saving drink: ${_nameController.text}');
+    final Beverage drink = Beverage(
+      strDrink: _nameController.text,
+      strTags: _tagsController.text,
+      strCategory: _categoryController.text,
+      strGlass: _glassController.text,
+      strInstructions: _instructionsController.text,
+      strAlcoholic: (bool.tryParse(_alcoholicController.text) ?? false),
+      ingredients: List.generate(_ingredientControllers.length, (index) {
+        final ingredientName = _ingredientControllers[index].text;
+        final measure = _measureControllers[index].text;
+        if (ingredientName.isEmpty && measure.isEmpty) {
+          return null;
+        }
+        return BeverageIngredient(
+          ingredient: Ingredient(strIngredient: ingredientName, strAlcohol: false),
+          ingredientAmount: measure,
+        );
+      }).whereType<BeverageIngredient>().toList(),
+      strDrinkThumb: _pickedImage != null ? _pickedImage!.path : _drink?.strDrinkThumb,
+    );
+
+    context.read<BeverageService>().create(drink).then((createdDrink) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Drink ${createdDrink.strDrink} created successfully!")),
+        );
+        Navigator.of(context).pop();
+      }
+    }).catchError((error) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Failed to create drink: $error")),
+        );
+      }
+    });
   }
 
   @override
@@ -186,6 +224,11 @@ class _ManageDrinkViewState extends State<ManageDrinkView> {
                 controller: _glassController,
                 labelText: 'Glass Type',
                 hintText: 'Enter the type of glass used',
+              ),
+              DrinkTextField(
+                controller: _alcoholicController,
+                labelText: 'Alcoholic',
+                hintText: 'Enter if the drink is alcoholic',
               ),
               DrinkTextField(
                 controller: _instructionsController,
