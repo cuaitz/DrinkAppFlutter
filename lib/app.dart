@@ -6,6 +6,10 @@ import 'package:drink_app_flutter/view/components/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+// permite que o dio client consiga voltar pra tela de login nos 401
+final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
+  GlobalKey<ScaffoldMessengerState>();
+
 class DrinkApp extends StatefulWidget {
   const DrinkApp({super.key});
 
@@ -30,6 +34,7 @@ class _DrinkAppState extends State<DrinkApp> {
         theme: DrinkAppTheme.light(),
         darkTheme: DrinkAppTheme.dark(),
         themeMode: ThemeMode.system,
+        scaffoldMessengerKey: scaffoldMessengerKey,
         routerConfig: drinkAppRouter,
         title: "DrinkApp",
         debugShowCheckedModeBanner: false,

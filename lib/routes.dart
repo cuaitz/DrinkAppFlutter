@@ -5,7 +5,11 @@ import 'package:drink_app_flutter/view/login_view.dart';
 import 'package:drink_app_flutter/view/manage_drink_view.dart';
 import 'package:drink_app_flutter/view/my_profile_view.dart';
 import 'package:drink_app_flutter/view/register_view.dart';
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
+// permite que o dio client consiga voltar pra tela de login nos 401
+final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
 
 class DrinkAppRoutes {
   static const String homeView = '/home';
@@ -19,6 +23,7 @@ class DrinkAppRoutes {
 }
 
 final GoRouter drinkAppRouter = GoRouter(
+  navigatorKey: rootNavigatorKey,
   initialLocation: DrinkAppRoutes.homeView,
   routes: [
     GoRoute(

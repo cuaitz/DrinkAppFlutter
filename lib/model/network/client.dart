@@ -1,5 +1,8 @@
 
 import 'package:dio/dio.dart';
+import 'package:drink_app_flutter/app.dart';
+import 'package:drink_app_flutter/routes.dart';
+import 'package:flutter/material.dart';
 
 class ApiClient {
   late final Dio dio;
@@ -27,6 +30,16 @@ class ApiClient {
         },
         onError: (e, handler) {
           print("Request error: ${e.response?.statusCode} ${e.response?.data}");
+          if (e.response?.statusCode == 401) {
+            token = null;
+            scaffoldMessengerKey.currentState?.showSnackBar(
+              const SnackBar(
+                content: Text('Sessão expirada. Faça login novamente.'),
+                backgroundColor: Colors.orange,
+              ),
+            );
+            drinkAppRouter.go(DrinkAppRoutes.homeView);
+          }
           return handler.next(e);
         }
       )
