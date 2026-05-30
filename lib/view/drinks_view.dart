@@ -41,8 +41,11 @@ class _DrinksViewState extends State<DrinksView> {
   }
 
   void getDrinks() {
-    //! TO-DO: Botar a logica de pegar todos/só os próprios drinks
-    context.read<DrinkService>().getAll().then((drinks) {
+    final promise = widget.ownDrinks
+      ? context.read<DrinkService>().getUserDrinks()
+      : context.read<DrinkService>().getAll();
+
+    promise.then((drinks) {
       setState(() {
         _drinks = drinks;
         _filteredDrinks = drinks;

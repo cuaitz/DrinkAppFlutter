@@ -13,8 +13,8 @@ class DrinkService {
         .toList();
   }
 
-  Future<List<Drink>> getUserDrinks(String userId) async {
-    final res = await dio.get('/api/drinks/user/$userId');
+  Future<List<Drink>> getUserDrinks() async {
+    final res = await dio.get('/api/drinks/user');
     return (res.data as List)
         .map((e) => Drink.fromJson(e))
         .toList();
