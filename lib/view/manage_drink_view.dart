@@ -11,7 +11,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class ManageDrinkView extends StatefulWidget {
-  final int? drinkId;
+  final String? drinkId;
   const ManageDrinkView({super.key, this.drinkId});
 
   @override
@@ -122,17 +122,21 @@ class _ManageDrinkViewState extends State<ManageDrinkView> {
       strDrinkThumb: _pickedImage != null ? _pickedImage!.path : _drink?.strDrinkThumb,
     );
 
-    context.read<DrinkService>().create(drink).then((createdDrink) {
+    final Future<Drink> saveFuture = widget.drinkId != null
+      ? context.read<DrinkService>().update(widget.drinkId!, drink)
+      : context.read<DrinkService>().create(drink);
+
+    saveFuture.then((drink) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Drink ${createdDrink.strDrink} created successfully!")),
+          SnackBar(content: Text("Drink ${drink.strDrink} ${widget.drinkId != null ? 'updated' : 'created'} successfully!")),
         );
         Navigator.of(context).pop();
       }
     }).catchError((error) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Failed to create drink: $error")),
+          SnackBar(content: Text("Failed to ${widget.drinkId != null ? 'update' : 'create'} drink: $error")),
         );
       }
     });
@@ -143,25 +147,33 @@ class _ManageDrinkViewState extends State<ManageDrinkView> {
     super.initState();
     updateFields();
 
-    // if (widget.drinkId != null) {
-    //   _getDrink(widget.drinkId!).then((drink) {
-    //     setState(() {
-    //       _drink = drink;
-    //       updateFields();
-    //     });
-    //   });
-    // }
+    if (widget.drinkId != null) {
+      _getDrink(widget.drinkId!).then((drink) {
+        setState(() {
+          _drink = drink;
+          updateFields();
+        });
+      });
+    }
   }
 
   void updateFields() {
+    _ingredientControllers.clear();
+    _measureControllers.clear();
+
     if (_drink != null) {
       _nameController.text = _drink?.strDrink ?? '';
       _categoryController.text = _drink?.strCategory ?? '';
       _instructionsController.text = _drink?.strInstructions ?? '';
     
-      for (int i = 0; i < _drink!.ingredients.length; i++) {
-        _ingredientControllers.add(TextEditingController(text: _drink!.ingredients[i].name));
-        _measureControllers.add(TextEditingController(text: _drink!.ingredients[i].measure));
+      for (int i = 0; i < 15; i++) {
+        if (i < _drink!.ingredients.length) {
+          _ingredientControllers.add(TextEditingController(text: _drink!.ingredients[i].name));
+          _measureControllers.add(TextEditingController(text: _drink!.ingredients[i].measure));
+        } else {
+          _ingredientControllers.add(TextEditingController());
+          _measureControllers.add(TextEditingController());
+        }
       }
     } else {
       for (int i = 0; i < 15; i++) {
@@ -171,11 +183,9 @@ class _ManageDrinkViewState extends State<ManageDrinkView> {
     }
   }
 
-  //! TO-DO: Fazer o fetch do drink real aqui
-  // Future<Beverage> _getDrink(int drinkId) async {
-  //   await Future.delayed(Duration(seconds: 2)); //! TO-DO: TIRAR ISSO DEPOIS
-  //   return Beverage.getMockBeverages().firstWhere((drink) => drink.id == drinkId);
-  // }
+  Future<Drink> _getDrink(String drinkId) async {
+    return await context.read<DrinkService>().get(drinkId);
+  }
 
   @override
   Widget build(BuildContext context) {

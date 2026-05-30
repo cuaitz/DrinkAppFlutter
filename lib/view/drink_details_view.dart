@@ -1,11 +1,13 @@
 import 'package:drink_app_flutter/model/drink.dart';
+import 'package:drink_app_flutter/model/network/drink_service.dart';
 import 'package:drink_app_flutter/routes.dart';
 import 'package:drink_app_flutter/view/default_view.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 class DrinkDetailsView extends StatefulWidget {
-  final int drinkId;
+  final String drinkId;
   const DrinkDetailsView({super.key, required this.drinkId});
 
   @override
@@ -20,18 +22,16 @@ class _DrinkDetailsViewState extends State<DrinkDetailsView> {
   void initState() {
     super.initState();
 
-    // _getDrink(widget.drinkId).then((drink) {
-    //   setState(() {
-    //     _drink = drink;
-    //   });
-    // });
+    _getDrink(widget.drinkId).then((drink) {
+      setState(() {
+        _drink = drink;
+      });
+    });
   }
 
-  // //! TO-DO: Fazer o fetch do drink real aqui
-  // Future<Beverage> _getDrink(int drinkId) async {
-  //   await Future.delayed(Duration(seconds: 2)); //! TO-DO: TIRAR ISSO DEPOIS
-  //   return Beverage.getMockBeverages().firstWhere((drink) => drink.id == drinkId);
-  // }
+  Future<Drink> _getDrink(String drinkId) async {
+    return await context.read<DrinkService>().get(drinkId);
+  }
 
   Widget _getImage() {
     final double size = MediaQuery.of(context).size.width * .5;

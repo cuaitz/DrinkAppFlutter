@@ -53,7 +53,7 @@ final GoRouter drinkAppRouter = GoRouter(
       path: DrinkAppRoutes.drinkDetailsView,
       name: DrinkAppRoutes.drinkDetailsView,
       builder: (context, state) {
-        return DrinkDetailsView(drinkId: int.parse(state.pathParameters['id'] ?? '0'));
+        return DrinkDetailsView(drinkId: state.pathParameters['id']!);
       }
     ),
     GoRoute(
@@ -67,7 +67,7 @@ final GoRouter drinkAppRouter = GoRouter(
       path: DrinkAppRoutes.manageDrinkView,
       name: DrinkAppRoutes.manageDrinkView,
       builder: (context, state) {
-        int? id = state.uri.queryParameters['id'] != null ? int.tryParse(state.uri.queryParameters['id']!) : null;
+        String? id = state.uri.queryParameters['id'];
         return ManageDrinkView(drinkId: id);
       }
     ),

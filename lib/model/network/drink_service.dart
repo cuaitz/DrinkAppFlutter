@@ -38,6 +38,14 @@ class DrinkService {
     return Drink.fromJson(res.data);
   }
 
+  Future<Drink> get(String id) async {
+    final res = await dio.get(
+      '/api/drinks/$id'
+    );
+
+    return Drink.fromJson(res.data);
+  }
+
   Future<void> delete(String id) async {
     await dio.delete('/api/drinks/$id');
   }
