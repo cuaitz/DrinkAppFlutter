@@ -21,6 +21,10 @@ class ManageDrinkView extends StatefulWidget {
 class _ManageDrinkViewState extends State<ManageDrinkView> {
   Drink? _drink;
   File? _pickedImage;
+  bool _loading = false;
+  bool _saving = false;
+  bool _hasError = false;
+  String? _errorMessage;
 
   final ImagePicker _imagePicker = ImagePicker();
 
@@ -122,6 +126,10 @@ class _ManageDrinkViewState extends State<ManageDrinkView> {
       strDrinkThumb: _pickedImage != null ? _pickedImage!.path : _drink?.strDrinkThumb,
     );
 
+    setState(() {
+      _saving = true;
+    });
+
     final Future<Drink> saveFuture = widget.drinkId != null
       ? context.read<DrinkService>().update(widget.drinkId!, drink)
       : context.read<DrinkService>().create(drink);
@@ -139,6 +147,11 @@ class _ManageDrinkViewState extends State<ManageDrinkView> {
           SnackBar(content: Text("Failed to ${widget.drinkId != null ? 'update' : 'create'} drink: $error")),
         );
       }
+    }).whenComplete(() {
+      if (!mounted) return;
+      setState(() {
+        _saving = false;
+      });
     });
   }
 
@@ -148,10 +161,28 @@ class _ManageDrinkViewState extends State<ManageDrinkView> {
     updateFields();
 
     if (widget.drinkId != null) {
+      setState(() {
+        _loading = true;
+        _hasError = false;
+        _errorMessage = null;
+      });
+
       _getDrink(widget.drinkId!).then((drink) {
+        if (!mounted) return;
         setState(() {
           _drink = drink;
           updateFields();
+        });
+      }).catchError((error) {
+        if (!mounted) return;
+        setState(() {
+          _hasError = true;
+          _errorMessage = error.toString();
+        });
+      }).whenComplete(() {
+        if (!mounted) return;
+        setState(() {
+          _loading = false;
         });
       });
     }
@@ -189,11 +220,55 @@ class _ManageDrinkViewState extends State<ManageDrinkView> {
 
   @override
   Widget build(BuildContext context) {
-    if (_drink == null && widget.drinkId != null) {
-      return DefaultView(
-        title: widget.drinkId != null ? 'Loading Drink...' : 'Create New Drink',
+    if (_loading && widget.drinkId != null) {
+      return const DefaultView(
+        title: 'Loading Drink...',
         body: Center(
           child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
+    if (_hasError && widget.drinkId != null) {
+      return DefaultView(
+        title: 'Erro',
+        body: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text('Erro ao carregar drink: ${_errorMessage ?? ''}'),
+              const SizedBox(height: 12),
+              ElevatedButton(
+                onPressed: () {
+                  // retry
+                  setState(() {
+                    _loading = true;
+                    _hasError = false;
+                    _errorMessage = null;
+                  });
+                  _getDrink(widget.drinkId!).then((drink) {
+                    if (!mounted) return;
+                    setState(() {
+                      _drink = drink;
+                      updateFields();
+                    });
+                  }).catchError((error) {
+                    if (!mounted) return;
+                    setState(() {
+                      _hasError = true;
+                      _errorMessage = error.toString();
+                    });
+                  }).whenComplete(() {
+                    if (!mounted) return;
+                    setState(() {
+                      _loading = false;
+                    });
+                  });
+                },
+                child: const Text('Tentar novamente'),
+              )
+            ],
+          ),
         ),
       );
     }
@@ -243,10 +318,15 @@ class _ManageDrinkViewState extends State<ManageDrinkView> {
                   ],
                 );
               }),
-              DrinkButton(
-                text: _drink != null ? 'Update Drink' : 'Create Drink',
-                onPressed: _saveDrink
-              )
+              _saving
+                ? const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 12.0),
+                    child: CircularProgressIndicator(),
+                  )
+                : DrinkButton(
+                    text: _drink != null ? 'Update Drink' : 'Create Drink',
+                    onPressed: _saveDrink
+                  )
             ]
           )
         )

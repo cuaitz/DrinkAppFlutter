@@ -20,6 +20,9 @@ class _DrinksViewState extends State<DrinksView> {
 
   List<Drink> _drinks = [];
   List<Drink> _filteredDrinks = [];
+  bool _loading = false;
+  bool _hasError = false;
+  String? _errorMessage;
 
   void _onFilterChanged(String value) {
     setState(() {
@@ -50,21 +53,34 @@ class _DrinksViewState extends State<DrinksView> {
   }
 
   Future<void> getDrinks() async {
-    final promise = widget.ownDrinks
-      ? context.read<DrinkService>().getUserDrinks()
-      : context.read<DrinkService>().getAll();
+    if (!mounted) return;
+    setState(() {
+      _loading = true;
+      _hasError = false;
+      _errorMessage = null;
+    });
 
-    await promise.then((drinks) {
+    try {
+      final drinks = await (widget.ownDrinks
+          ? context.read<DrinkService>().getUserDrinks()
+          : context.read<DrinkService>().getAll());
+
+      if (!mounted) return;
       setState(() {
         _drinks = drinks;
         _onFilterChanged(_filterController.text);
       });
-    }).catchError((error) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Erro ao buscar drinks: $error")),
-        );
-      }
+    } catch (error) {
+      if (!mounted) return;
+      setState(() {
+        _hasError = true;
+        _errorMessage = error.toString();
+      });
+    }
+
+    if (!mounted) return;
+    setState(() {
+      _loading = false;
     });
   }
 
@@ -88,20 +104,46 @@ class _DrinksViewState extends State<DrinksView> {
                 labelText: "Search for drinks",
                 onChanged: _onFilterChanged,
               ),
-              ListView.builder(
-                shrinkWrap: true,
-                itemCount: _filteredDrinks.length,
-                itemBuilder: (context, index) {
-                  final Drink drink = _filteredDrinks[index];
-                  return ListTile(
-                    title: Text(drink.strDrink ?? 'Unknown', style: Theme.of(context).textTheme.titleMedium,),
-                    subtitle: Text(drink.strCategory ?? 'No category', style: Theme.of(context).textTheme.bodyMedium),
-                    onTap: () {
-                      _onDrinkTapped(drink);
-                    },
-                  );
-                }
-              )
+
+              if (_loading)
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 24.0),
+                  child: Center(child: CircularProgressIndicator()),
+                )
+              else if (_hasError)
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 24.0),
+                  child: Column(
+                    children: [
+                      Text('Erro ao buscar drinks: ${_errorMessage ?? ''}'),
+                      const SizedBox(height: 12),
+                      ElevatedButton(
+                        onPressed: () => getDrinks(),
+                        child: const Text('Tentar novamente'),
+                      )
+                    ],
+                  ),
+                )
+              else if (_filteredDrinks.isEmpty)
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 24.0),
+                  child: Text('Nenhum drink disponível.', style: Theme.of(context).textTheme.bodyLarge),
+                )
+              else
+                ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: _filteredDrinks.length,
+                  itemBuilder: (context, index) {
+                    final Drink drink = _filteredDrinks[index];
+                    return ListTile(
+                      title: Text(drink.strDrink ?? 'Unknown', style: Theme.of(context).textTheme.titleMedium,),
+                      subtitle: Text(drink.strCategory ?? 'No category', style: Theme.of(context).textTheme.bodyMedium),
+                      onTap: () {
+                        _onDrinkTapped(drink);
+                      },
+                    );
+                  }
+                )
             ]
           ),
         )

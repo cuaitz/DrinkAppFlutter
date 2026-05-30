@@ -17,14 +17,39 @@ class DrinkDetailsView extends StatefulWidget {
 class _DrinkDetailsViewState extends State<DrinkDetailsView> {
   Drink? _drink;
   bool _isOwner = true; //! TO-DO: Adicionar a lógica para verificar se o drink pertence ao usuário logado
+  bool _loading = false;
+  bool _hasError = false;
+  String? _errorMessage;
 
   @override
   void initState() {
     super.initState();
 
+    _loadDrink();
+  }
+
+  void _loadDrink() {
+    setState(() {
+      _loading = true;
+      _hasError = false;
+      _errorMessage = null;
+    });
+
     _getDrink(widget.drinkId).then((drink) {
+      if (!mounted) return;
       setState(() {
         _drink = drink;
+      });
+    }).catchError((error) {
+      if (!mounted) return;
+      setState(() {
+        _hasError = true;
+        _errorMessage = error.toString();
+      });
+    }).whenComplete(() {
+      if (!mounted) return;
+      setState(() {
+        _loading = false;
       });
     });
   }
@@ -83,11 +108,30 @@ class _DrinkDetailsViewState extends State<DrinkDetailsView> {
 
   @override
   Widget build(BuildContext context) {
-    if (_drink == null) {
+    if (_loading) {
       return const DefaultView(
         title: "Drink Details",
         body: Center(
           child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
+    if (_hasError) {
+      return DefaultView(
+        title: 'Erro',
+        body: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text('Erro ao carregar detalhes: ${_errorMessage ?? ''}'),
+              const SizedBox(height: 12),
+              ElevatedButton(
+                onPressed: _loadDrink,
+                child: const Text('Tentar novamente'),
+              )
+            ],
+          ),
         ),
       );
     }
@@ -113,9 +157,18 @@ class _DrinkDetailsViewState extends State<DrinkDetailsView> {
         onPressed: () {
           GoRouter.of(context).pushNamed(DrinkAppRoutes.manageDrinkView, queryParameters: {'id': _drink!.id.toString()}).then((shouldRefresh) {
             if (shouldRefresh == true) {
+              setState(() {
+                _loading = true;
+              });
               _getDrink(widget.drinkId).then((drink) {
+                if (!mounted) return;
                 setState(() {
                   _drink = drink;
+                });
+              }).whenComplete(() {
+                if (!mounted) return;
+                setState(() {
+                  _loading = false;
                 });
               });
             }
