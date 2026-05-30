@@ -1,6 +1,9 @@
+import 'package:drink_app_flutter/model/network/auth_service.dart';
+import 'package:drink_app_flutter/model/network/client.dart';
 import 'package:drink_app_flutter/routes.dart';
 import 'package:drink_app_flutter/view/components/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class DrinkApp extends StatefulWidget {
   const DrinkApp({super.key});
@@ -12,14 +15,21 @@ class DrinkApp extends StatefulWidget {
 class _DrinkAppState extends State<DrinkApp> {
   @override
   Widget build(BuildContext context) {
-    // TO-DO: Adicionar os provider aqui no futuro
-    return MaterialApp.router(
-      theme: DrinkAppTheme.light(),
-      darkTheme: DrinkAppTheme.dark(),
-      themeMode: ThemeMode.system,
-      routerConfig: drinkAppRouter,
-      title: "DrinkApp",
-      debugShowCheckedModeBanner: false,
+    return MultiProvider(
+      providers: [
+        Provider<ApiClient>(create: (_) => ApiClient()),
+        Provider<AuthService>(
+          create: (context) => AuthService(context.read<ApiClient>()),
+        ),
+      ],
+      child: MaterialApp.router(
+        theme: DrinkAppTheme.light(),
+        darkTheme: DrinkAppTheme.dark(),
+        themeMode: ThemeMode.system,
+        routerConfig: drinkAppRouter,
+        title: "DrinkApp",
+        debugShowCheckedModeBanner: false,
+      ),
     );
   }
 }

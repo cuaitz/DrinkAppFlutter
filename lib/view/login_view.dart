@@ -1,9 +1,11 @@
+import 'package:drink_app_flutter/model/network/auth_service.dart';
 import 'package:drink_app_flutter/routes.dart';
 import 'package:drink_app_flutter/view/components/drink_button.dart';
 import 'package:drink_app_flutter/view/components/drink_text_field.dart';
 import 'package:drink_app_flutter/view/default_view.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -17,14 +19,23 @@ class _LoginViewState extends State<LoginView> {
   final TextEditingController _passwordController = TextEditingController();
 
   void _onLogin() {
-    // TO-DO: Implementar a lógica de login
-
     String email = _emailController.text;
     String password = _passwordController.text;
-
-    print("Email: $email, Password: $password");
-
-    GoRouter.of(context).pushNamed(DrinkAppRoutes.drinksView);
+    
+    context.read<AuthService>().login(email, password).then((value) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Logado com sucesso!")),
+        );
+        GoRouter.of(context).go(DrinkAppRoutes.drinksView);
+      }
+    }).onError((error, stackTrace) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Erro ao fazer login: $error")),
+        );
+      }
+    });
   }
 
   @override

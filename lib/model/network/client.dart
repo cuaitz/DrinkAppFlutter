@@ -3,11 +3,12 @@ import 'package:dio/dio.dart';
 
 class ApiClient {
   late final Dio dio;
+  String? token;
 
   ApiClient() {
     dio = Dio(
       BaseOptions(
-        baseUrl: "http://localhost:3000/api/",
+        baseUrl: "https://drink-app-backend.vercel.app",
         connectTimeout: Duration(seconds: 10),
         receiveTimeout: Duration(seconds: 10),
         headers: {
@@ -19,13 +20,21 @@ class ApiClient {
     dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) {
-          options.headers['Authorization'] = 'Bearer ###';
+          if (token != null) {
+            options.headers['Authorization'] = 'Bearer $token';
+          }
           return handler.next(options);
         },
         onError: (e, handler) {
+          print("Request error: ${e.response?.statusCode} ${e.response?.data}");
           return handler.next(e);
         }
       )
     );
+
+  }
+
+  void setToken(String newToken) {
+    token = newToken;
   }
 }
