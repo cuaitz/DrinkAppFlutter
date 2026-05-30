@@ -1,5 +1,4 @@
 import 'package:drink_app_flutter/routes.dart';
-import 'package:drink_app_flutter/view/components/drink_button.dart';
 import 'package:drink_app_flutter/view/default_view.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';

@@ -1,6 +1,6 @@
 import 'package:drink_app_flutter/model/network/auth_service.dart';
-import 'package:drink_app_flutter/model/network/beverage_service.dart';
 import 'package:drink_app_flutter/model/network/client.dart';
+import 'package:drink_app_flutter/model/network/drink_service.dart';
 import 'package:drink_app_flutter/routes.dart';
 import 'package:drink_app_flutter/view/components/theme.dart';
 import 'package:flutter/material.dart';
@@ -22,8 +22,8 @@ class _DrinkAppState extends State<DrinkApp> {
         Provider<AuthService>(
           create: (context) => AuthService(context.read<ApiClient>()),
         ),
-        Provider<BeverageService>(
-          create: (context) => BeverageService(context.read<ApiClient>().dio),
+        Provider<DrinkService>(
+          create: (context) => DrinkService(context.read<ApiClient>().dio),
         ),
       ],
       child: MaterialApp.router(

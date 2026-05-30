@@ -1,8 +1,7 @@
 import 'dart:io';
-import 'package:drink_app_flutter/model/beverage.dart';
-import 'package:drink_app_flutter/model/beverage_ingredient.dart';
-import 'package:drink_app_flutter/model/ingredient.dart';
-import 'package:drink_app_flutter/model/network/beverage_service.dart';
+import 'package:drink_app_flutter/model/drink.dart';
+import 'package:drink_app_flutter/model/drink_ingredient.dart';
+import 'package:drink_app_flutter/model/network/drink_service.dart';
 import 'package:drink_app_flutter/view/components/drink_button.dart';
 import 'package:drink_app_flutter/view/components/drink_text_field.dart';
 import 'package:drink_app_flutter/view/default_view.dart';
@@ -20,7 +19,7 @@ class ManageDrinkView extends StatefulWidget {
 }
 
 class _ManageDrinkViewState extends State<ManageDrinkView> {
-  Beverage? _drink;
+  Drink? _drink;
   File? _pickedImage;
 
   final ImagePicker _imagePicker = ImagePicker();
@@ -108,28 +107,25 @@ class _ManageDrinkViewState extends State<ManageDrinkView> {
   }
 
   void _saveDrink() {
-    final Beverage drink = Beverage(
+    final Drink drink = Drink(
       strDrink: _nameController.text,
-      strTags: _tagsController.text,
       strCategory: _categoryController.text,
-      strGlass: _glassController.text,
       strInstructions: _instructionsController.text,
-      strAlcoholic: (bool.tryParse(_alcoholicController.text) ?? false),
       ingredients: List.generate(_ingredientControllers.length, (index) {
         final ingredientName = _ingredientControllers[index].text;
         final measure = _measureControllers[index].text;
         if (ingredientName.isEmpty && measure.isEmpty) {
           return null;
         }
-        return BeverageIngredient(
-          ingredient: Ingredient(strIngredient: ingredientName, strAlcohol: false),
-          ingredientAmount: measure,
+        return DrinkIngredient(
+          name: ingredientName,
+          measure: measure,
         );
-      }).whereType<BeverageIngredient>().toList(),
+      }).whereType<DrinkIngredient>().toList(),
       strDrinkThumb: _pickedImage != null ? _pickedImage!.path : _drink?.strDrinkThumb,
     );
 
-    context.read<BeverageService>().create(drink).then((createdDrink) {
+    context.read<DrinkService>().create(drink).then((createdDrink) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text("Drink ${createdDrink.strDrink} created successfully!")),
@@ -162,15 +158,13 @@ class _ManageDrinkViewState extends State<ManageDrinkView> {
 
   void updateFields() {
     if (_drink != null) {
-      _nameController.text = _drink!.strDrink;
-      _tagsController.text = _drink!.strTags ?? '';
-      _categoryController.text = _drink!.strCategory ?? '';
-      _glassController.text = _drink!.strGlass ?? '';
-      _instructionsController.text = _drink!.strInstructions ?? '';
+      _nameController.text = _drink?.strDrink ?? '';
+      _categoryController.text = _drink?.strCategory ?? '';
+      _instructionsController.text = _drink?.strInstructions ?? '';
     
       for (int i = 0; i < _drink!.ingredients.length; i++) {
-        _ingredientControllers.add(TextEditingController(text: _drink!.ingredients[i].ingredient.strIngredient));
-        _measureControllers.add(TextEditingController(text: _drink!.ingredients[i].ingredientAmount));
+        _ingredientControllers.add(TextEditingController(text: _drink!.ingredients[i].name));
+        _measureControllers.add(TextEditingController(text: _drink!.ingredients[i].measure));
       }
     } else {
       for (int i = 0; i < 15; i++) {

@@ -1,5 +1,5 @@
-import 'package:drink_app_flutter/model/beverage.dart';
-import 'package:drink_app_flutter/model/network/beverage_service.dart';
+import 'package:drink_app_flutter/model/drink.dart';
+import 'package:drink_app_flutter/model/network/drink_service.dart';
 import 'package:drink_app_flutter/routes.dart';
 import 'package:drink_app_flutter/view/components/drink_text_field.dart';
 import 'package:drink_app_flutter/view/default_view.dart';
@@ -18,32 +18,31 @@ class DrinksView extends StatefulWidget {
 class _DrinksViewState extends State<DrinksView> {
   final TextEditingController _filterController = TextEditingController();
 
-  List<Beverage> _drinks = [];
-  List<Beverage> _filteredDrinks = [];
+  List<Drink> _drinks = [];
+  List<Drink> _filteredDrinks = [];
 
   void _onFilterChanged(String value) {
     setState(() {
       _filteredDrinks = _drinks.where((drink) {
         value = value.toLowerCase();
 
-        bool inName = drink.strDrink.toLowerCase().contains(value);
-        bool inTags = drink.strTags?.split(',').any((tag) => tag.toLowerCase().contains(value)) ?? false;
+        bool inName = drink.strDrink?.toLowerCase().contains(value) ?? false;
         bool inCategory = drink.strCategory?.toLowerCase().contains(value) ?? false;
-        bool inIngredients = drink.ingredients.any((ingredient) => ingredient.ingredient.strIngredient.toLowerCase().contains(value));
+        bool inIngredients = drink.ingredients.any((ingredient) => ingredient.name?.toLowerCase().contains(value) ?? false);
 
-        return inName || inTags || inCategory || inIngredients;
+        return inName || inCategory || inIngredients;
       }).toList();
     });
   }
 
-  void _onDrinkTapped(Beverage drink) {
+  void _onDrinkTapped(Drink drink) {
     print("Tapped ${drink.strDrink} (ID: ${drink.id})");
     GoRouter.of(context).pushNamed(DrinkAppRoutes.drinkDetailsView, pathParameters: {'id': drink.id.toString()});
   }
 
   void getDrinks() {
     //! TO-DO: Botar a logica de pegar todos/só os próprios drinks
-    context.read<BeverageService>().getAll().then((drinks) {
+    context.read<DrinkService>().getAll().then((drinks) {
       setState(() {
         _drinks = drinks;
         _filteredDrinks = drinks;
@@ -84,9 +83,9 @@ class _DrinksViewState extends State<DrinksView> {
                 shrinkWrap: true,
                 itemCount: _filteredDrinks.length,
                 itemBuilder: (context, index) {
-                  final Beverage drink = _filteredDrinks[index];
+                  final Drink drink = _filteredDrinks[index];
                   return ListTile(
-                    title: Text(drink.strDrink, style: Theme.of(context).textTheme.titleMedium,),
+                    title: Text(drink.strDrink ?? 'Unknown', style: Theme.of(context).textTheme.titleMedium,),
                     subtitle: Text(drink.strCategory ?? 'No category', style: Theme.of(context).textTheme.bodyMedium),
                     onTap: () {
                       _onDrinkTapped(drink);

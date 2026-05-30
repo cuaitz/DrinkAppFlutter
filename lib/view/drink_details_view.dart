@@ -1,4 +1,4 @@
-import 'package:drink_app_flutter/model/beverage.dart';
+import 'package:drink_app_flutter/model/drink.dart';
 import 'package:drink_app_flutter/routes.dart';
 import 'package:drink_app_flutter/view/default_view.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +13,7 @@ class DrinkDetailsView extends StatefulWidget {
 }
 
 class _DrinkDetailsViewState extends State<DrinkDetailsView> {
-  Beverage? _drink;
+  Drink? _drink;
   bool _isOwner = true; //! TO-DO: Adicionar a lógica para verificar se o drink pertence ao usuário logado
 
   @override
@@ -70,10 +70,10 @@ class _DrinkDetailsViewState extends State<DrinkDetailsView> {
 
     List<Widget> ingredients = [];
     for (int i = 1; i < _drink!.ingredients.length; i++) {
-      String? ingredient = _drink!.ingredients[i].ingredient.strIngredient;
-      String? measure = _drink!.ingredients[i].ingredientAmount;
+      String? ingredient = _drink!.ingredients[i].name;
+      String? measure = _drink!.ingredients[i].measure;
 
-      if (ingredient.isNotEmpty && measure.isNotEmpty) {
+      if ((ingredient ?? '').isNotEmpty && (measure ?? '').isNotEmpty) {
         ingredients.add(Text("- $ingredient ($measure)", style: Theme.of(context).textTheme.bodyMedium));
       }
     }
@@ -102,7 +102,6 @@ class _DrinkDetailsViewState extends State<DrinkDetailsView> {
               _getImage(),
               Text("Name: ${_drink!.strDrink}", style: Theme.of(context).textTheme.titleLarge),
               Text("Category: ${_drink!.strCategory ?? "Unknown"}", style: Theme.of(context).textTheme.titleMedium),
-              Text("Glass: ${_drink!.strGlass ?? "Unknown"}", style: Theme.of(context).textTheme.titleMedium),
               Text("Instructions: ${_drink!.strInstructions ?? "Unknown"}", style: Theme.of(context).textTheme.bodyMedium),
               Text("Ingredients:", style: Theme.of(context).textTheme.bodyMedium),
               ..._getValidIngredients()
