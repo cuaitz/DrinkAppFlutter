@@ -7,14 +7,14 @@ class DrinkService {
   DrinkService(this.dio);
 
   Future<List<Drink>> getAll() async {
-    final res = await dio.get('/drinks');
+    final res = await dio.get('/api/drinks');
     return (res.data as List)
         .map((e) => Drink.fromJson(e))
         .toList();
   }
 
   Future<List<Drink>> getUserDrinks(String userId) async {
-    final res = await dio.get('/drinks/user/$userId');
+    final res = await dio.get('/api/drinks/user/$userId');
     return (res.data as List)
         .map((e) => Drink.fromJson(e))
         .toList();
@@ -22,7 +22,7 @@ class DrinkService {
 
   Future<Drink> create(Drink drink) async {
     final res = await dio.post(
-      '/drinks',
+      '/api/drinks',
       data: drink.toJson(),
     );
 
@@ -31,7 +31,7 @@ class DrinkService {
 
   Future<Drink> update(String id, Drink drink) async {
     final res = await dio.put(
-      '/drinks/$id',
+      '/api/drinks/$id',
       data: drink.toJson(),
     );
 
@@ -39,6 +39,6 @@ class DrinkService {
   }
 
   Future<void> delete(String id) async {
-    await dio.delete('/drinks/$id');
+    await dio.delete('/api/drinks/$id');
   }
 }

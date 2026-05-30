@@ -25,11 +25,8 @@ class _ManageDrinkViewState extends State<ManageDrinkView> {
   final ImagePicker _imagePicker = ImagePicker();
 
   final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _tagsController = TextEditingController();
   final TextEditingController _categoryController = TextEditingController();
-  final TextEditingController _glassController = TextEditingController();
   final TextEditingController _instructionsController = TextEditingController();
-  final TextEditingController _alcoholicController = TextEditingController();
 
   final List<TextEditingController> _ingredientControllers = [];
   final List<TextEditingController> _measureControllers = [];
@@ -205,24 +202,9 @@ class _ManageDrinkViewState extends State<ManageDrinkView> {
                 hintText: 'Enter the name of the drink',
               ),
               DrinkTextField(
-                controller: _tagsController,
-                labelText: 'Tags',
-                hintText: 'Enter tags separated by commas',
-              ),
-              DrinkTextField(
                 controller: _categoryController,
                 labelText: 'Category',
                 hintText: 'Enter the category of the drink',
-              ),
-              DrinkTextField(
-                controller: _glassController,
-                labelText: 'Glass Type',
-                hintText: 'Enter the type of glass used',
-              ),
-              DrinkTextField(
-                controller: _alcoholicController,
-                labelText: 'Alcoholic',
-                hintText: 'Enter if the drink is alcoholic',
               ),
               DrinkTextField(
                 controller: _instructionsController,
