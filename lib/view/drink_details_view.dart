@@ -111,7 +111,15 @@ class _DrinkDetailsViewState extends State<DrinkDetailsView> {
       ),
       floatingActionButton: _isOwner ? FloatingActionButton(
         onPressed: () {
-          GoRouter.of(context).pushNamed(DrinkAppRoutes.manageDrinkView, queryParameters: {'id': _drink!.id.toString()});
+          GoRouter.of(context).pushNamed(DrinkAppRoutes.manageDrinkView, queryParameters: {'id': _drink!.id.toString()}).then((shouldRefresh) {
+            if (shouldRefresh == true) {
+              _getDrink(widget.drinkId).then((drink) {
+                setState(() {
+                  _drink = drink;
+                });
+              });
+            }
+          });
         },
         child: const Icon(Icons.edit),
       ) : null,

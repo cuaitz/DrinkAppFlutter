@@ -131,7 +131,7 @@ class _ManageDrinkViewState extends State<ManageDrinkView> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text("Drink ${drink.strDrink} ${widget.drinkId != null ? 'updated' : 'created'} successfully!")),
         );
-        Navigator.of(context).pop();
+        Navigator.of(context).pop(true);
       }
     }).catchError((error) {
       if (mounted) {

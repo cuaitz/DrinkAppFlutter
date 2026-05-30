@@ -37,18 +37,27 @@ class _DrinksViewState extends State<DrinksView> {
 
   void _onDrinkTapped(Drink drink) {
     print("Tapped ${drink.strDrink} (ID: ${drink.id})");
-    GoRouter.of(context).pushNamed(DrinkAppRoutes.drinkDetailsView, pathParameters: {'id': drink.id.toString()});
+    GoRouter.of(context)
+        .pushNamed(
+          DrinkAppRoutes.drinkDetailsView,
+          pathParameters: {'id': drink.id.toString()},
+        )
+        .then((_) {
+          if (mounted) {
+            getDrinks();
+          }
+        });
   }
 
-  void getDrinks() {
+  Future<void> getDrinks() async {
     final promise = widget.ownDrinks
       ? context.read<DrinkService>().getUserDrinks()
       : context.read<DrinkService>().getAll();
 
-    promise.then((drinks) {
+    await promise.then((drinks) {
       setState(() {
         _drinks = drinks;
-        _filteredDrinks = drinks;
+        _onFilterChanged(_filterController.text);
       });
     }).catchError((error) {
       if (mounted) {
@@ -62,10 +71,7 @@ class _DrinksViewState extends State<DrinksView> {
   @override
   void initState() {
     super.initState();
-
-    setState(() {
-      getDrinks();
-    });
+    getDrinks();
   }
 
   @override
@@ -102,7 +108,13 @@ class _DrinksViewState extends State<DrinksView> {
       ),
       floatingActionButton: widget.ownDrinks ? FloatingActionButton(
         onPressed: () {
-          GoRouter.of(context).pushNamed(DrinkAppRoutes.manageDrinkView);
+          GoRouter.of(context)
+              .pushNamed(DrinkAppRoutes.manageDrinkView)
+              .then((_) {
+                if (mounted) {
+                  getDrinks();
+                }
+              });
         },
         child: const Icon(Icons.add),
       ) : null,
