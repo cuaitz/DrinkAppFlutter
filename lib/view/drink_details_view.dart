@@ -119,7 +119,7 @@ class _DrinkDetailsViewState extends State<DrinkDetailsView> {
   Widget build(BuildContext context) {
     if (_loading) {
       return const DefaultView(
-        title: "Drink Details",
+        title: "Detalhes do Drink",
         body: Center(
           child: CircularProgressIndicator(),
         ),
@@ -146,17 +146,17 @@ class _DrinkDetailsViewState extends State<DrinkDetailsView> {
     }
     
     return DefaultView(
-      title: "Drink Details (${_drink!.strDrink})",
+      title: "Detalhes do Drink (${_drink?.strDrink})",
       body: Center(
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _getImage(),
-              Text("Name: ${_drink!.strDrink}", style: Theme.of(context).textTheme.titleLarge),
-              Text("Category: ${_drink!.strCategory ?? "Unknown"}", style: Theme.of(context).textTheme.titleMedium),
-              Text("Instructions: ${_drink!.strInstructions ?? "Unknown"}", style: Theme.of(context).textTheme.bodyMedium),
-              Text("Ingredients:", style: Theme.of(context).textTheme.bodyMedium),
+              Text("Nome: ${_drink!.strDrink}", style: Theme.of(context).textTheme.titleLarge),
+              Text("Categoria: ${_drink!.strCategory ?? "Desconhecido"}", style: Theme.of(context).textTheme.titleMedium),
+              Text("Instruções: ${_drink!.strInstructions ?? "Desconhecido"}", style: Theme.of(context).textTheme.bodyMedium),
+              Text("Ingredientes:", style: Theme.of(context).textTheme.bodyMedium),
               ..._getValidIngredients()
             ],
           ),

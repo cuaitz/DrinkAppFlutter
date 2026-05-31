@@ -43,15 +43,15 @@ class _RegisterViewState extends State<RegisterView> {
   @override
   Widget build(BuildContext context) {
     return DefaultView(
-      title: "Register",
+      title: "Registrar",
       showBottomAppBar: false,
       body: Center(
         child: Column(
           children: [
-            Text("Register", style: Theme.of(context).textTheme.titleLarge),
-            Text("Very cool register page", style: Theme.of(context).textTheme.titleMedium),
+            Text("Registrar", style: Theme.of(context).textTheme.titleLarge),
+            Text("Página de registro", style: Theme.of(context).textTheme.titleMedium),
             DrinkTextField(
-              hintText: "Name",
+              hintText: "Nome",
               controller: _nameController,
             ),
             DrinkTextField(
@@ -59,11 +59,11 @@ class _RegisterViewState extends State<RegisterView> {
               controller: _emailController,
             ),
             DrinkTextField(
-              hintText: "Password",
+              hintText: "Senha",
               controller: _passwordController,
               obscureText: true,
             ),
-            DrinkButton(text: 'Register', onPressed: _onRegister)
+            DrinkButton(text: 'Registrar', onPressed: _onRegister)
           ]
         )
       ),

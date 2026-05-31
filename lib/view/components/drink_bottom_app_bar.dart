@@ -30,13 +30,13 @@ class DrinkBottomAppBar extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          _buildItem(context, Icons.local_drink_outlined, 'Cocktails', () {
+            _buildItem(context, Icons.local_drink_outlined, 'Coquetéis', () {
             GoRouter.of(context).go(DrinkAppRoutes.drinksView);
           }),
-          _buildItem(context, Icons.water_drop_outlined, 'My Drinks', () {
+          _buildItem(context, Icons.water_drop_outlined, 'Meus drinks', () {
             GoRouter.of(context).go(DrinkAppRoutes.myDrinksView);
           }),
-          _buildItem(context, Icons.person_outline, 'Profile', () {
+          _buildItem(context, Icons.person_outline, 'Perfil', () {
             GoRouter.of(context).go(DrinkAppRoutes.myProfileView);
           })
         ],

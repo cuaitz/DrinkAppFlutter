@@ -93,15 +93,15 @@ class _DrinksViewState extends State<DrinksView> {
   @override
   Widget build(BuildContext context) {
     return DefaultView(
-      title: widget.ownDrinks ? 'My Drinks' : 'Drinks',
+      title: widget.ownDrinks ? 'Minhas Bebidas' : 'Bebidas',
       body: Center(
         child: SingleChildScrollView(
           child: Column(
             children: [
               DrinkTextField(
                 controller: _filterController,
-                hintText: "Filter by name, tags, category, ingredients, etc.",
-                labelText: "Search for drinks",
+                hintText: "Filtrar por nome, tags, categoria, ingredientes, etc.",
+                labelText: "Pesquisar bebidas",
                 onChanged: _onFilterChanged,
               ),
 
@@ -136,8 +136,8 @@ class _DrinksViewState extends State<DrinksView> {
                   itemBuilder: (context, index) {
                     final Drink drink = _filteredDrinks[index];
                     return ListTile(
-                      title: Text(drink.strDrink ?? 'Unknown', style: Theme.of(context).textTheme.titleMedium,),
-                      subtitle: Text(drink.strCategory ?? 'No category', style: Theme.of(context).textTheme.bodyMedium),
+                      title: Text(drink.strDrink ?? 'Desconhecido', style: Theme.of(context).textTheme.titleMedium,),
+                      subtitle: Text(drink.strCategory ?? 'Sem categoria', style: Theme.of(context).textTheme.bodyMedium),
                       onTap: () {
                         _onDrinkTapped(drink);
                       },

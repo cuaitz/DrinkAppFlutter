@@ -137,14 +137,14 @@ class _ManageDrinkViewState extends State<ManageDrinkView> {
     saveFuture.then((drink) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Drink ${drink.strDrink} ${widget.drinkId != null ? 'updated' : 'created'} successfully!")),
+          SnackBar(content: Text("Drink ${drink.strDrink} ${widget.drinkId != null ? 'atualizado' : 'criado'} com sucesso!")),
         );
         Navigator.of(context).pop(true);
       }
     }).catchError((error) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Failed to ${widget.drinkId != null ? 'update' : 'create'} drink: $error")),
+          SnackBar(content: Text("Falha ao ${widget.drinkId != null ? 'atualizar' : 'criar'} drink: $error")),
         );
       }
     }).whenComplete(() {
@@ -222,7 +222,7 @@ class _ManageDrinkViewState extends State<ManageDrinkView> {
   Widget build(BuildContext context) {
     if (_loading && widget.drinkId != null) {
       return const DefaultView(
-        title: 'Loading Drink...',
+        title: 'Carregando drink...',
         body: Center(
           child: CircularProgressIndicator(),
         ),
@@ -273,27 +273,27 @@ class _ManageDrinkViewState extends State<ManageDrinkView> {
     }
 
     return DefaultView(
-      title: _drink != null ? 'Edit ${_drink!.strDrink}' : 'Create New Drink',
+      title: _drink != null ? 'Editar ${_drink!.strDrink}' : 'Criar novo drink',
       body: Center(
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Text(_drink != null ? 'Editing ${_drink!.strDrink}' : 'Creating a new drink', style: Theme.of(context).textTheme.titleMedium),
+              Text(_drink != null ? 'Editando ${_drink!.strDrink}' : 'Criando um novo drink', style: Theme.of(context).textTheme.titleMedium),
               _getImage(),
               DrinkTextField(
                 controller: _nameController,
-                labelText: 'Name',
-                hintText: 'Enter the name of the drink',
+                labelText: 'Nome',
+                hintText: 'Digite o nome do drink',
               ),
               DrinkTextField(
                 controller: _categoryController,
-                labelText: 'Category',
-                hintText: 'Enter the category of the drink',
+                labelText: 'Categoria',
+                hintText: 'Digite a categoria do drink',
               ),
               DrinkTextField(
                 controller: _instructionsController,
-                labelText: 'Instructions',
-                hintText: 'Enter the preparation instructions',
+                labelText: 'Instruções',
+                hintText: 'Digite as instruções de preparo',
                 maxLines: 6,
               ),
               ...List.generate(_ingredientControllers.length, (index) {
@@ -302,16 +302,16 @@ class _ManageDrinkViewState extends State<ManageDrinkView> {
                     Expanded(
                       child: DrinkTextField(
                         controller: _ingredientControllers[index],
-                        labelText: 'Ingredient ${index + 1}',
-                        hintText: 'Enter ingredient name',
+                        labelText: 'Ingrediente ${index + 1}',
+                        hintText: 'Digite o nome do ingrediente',
                       ),
                     ),
                     SizedBox(width: 8),
                     Expanded(
                       child: DrinkTextField(
                         controller: _measureControllers[index],
-                        labelText: 'Measure ${index + 1}',
-                        hintText: 'Enter measure for ingredient',
+                        labelText: 'Medida ${index + 1}',
+                        hintText: 'Digite a medida do ingrediente',
                       ),
                     ),
                   ],
@@ -323,7 +323,7 @@ class _ManageDrinkViewState extends State<ManageDrinkView> {
                     child: CircularProgressIndicator(),
                   )
                 : DrinkButton(
-                    text: _drink != null ? 'Update Drink' : 'Create Drink',
+                    text: _drink != null ? 'Atualizar drink' : 'Criar drink',
                     onPressed: _saveDrink
                   )
             ]

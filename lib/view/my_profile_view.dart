@@ -25,7 +25,7 @@ class _MyProfileViewState extends State<MyProfileView> {
       context.read<ApiClient>().setAuth(null, null);
     } catch (_) {}
 
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Logout realizado')));
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Sessão encerrada')));
     GoRouter.of(context).go(DrinkAppRoutes.homeView);
   }
 
@@ -65,7 +65,7 @@ class _MyProfileViewState extends State<MyProfileView> {
   Widget build(BuildContext context) {
     if (_loading) {
       return const DefaultView(
-        title: 'Loading Profile...',
+        title: 'Carregando perfil...',
         body: Center(
           child: CircularProgressIndicator(),
         ),
@@ -110,7 +110,7 @@ class _MyProfileViewState extends State<MyProfileView> {
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: _onLogout,
-              child: const Text('Logout'),
+              child: const Text('Sair'),
             )
           ],
         ),

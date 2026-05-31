@@ -41,23 +41,23 @@ class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     return DefaultView(
-      title: "Login",
+      title: "Entrar",
       showBottomAppBar: false,
       body: Center(
         child: Column(
           children: [
-            Text("Login", style: Theme.of(context).textTheme.titleLarge),
-            Text("This is the login page", style: Theme.of(context).textTheme.titleMedium),
+            Text("Entrar", style: Theme.of(context).textTheme.titleLarge),
+            Text("Página de login", style: Theme.of(context).textTheme.titleMedium),
             DrinkTextField(
-              hintText: "Username",
+              hintText: "Email",
               controller: _emailController,
             ),
             DrinkTextField(
-              hintText: "Password",
+              hintText: "Senha",
               controller: _passwordController,
               obscureText: true,
             ),
-            DrinkButton(text: 'Login', onPressed: _onLogin)
+            DrinkButton(text: 'Entrar', onPressed: _onLogin)
           ]
         )
       ),

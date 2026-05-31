@@ -29,13 +29,13 @@ class _HomeViewState extends State<HomeView> {
         child: Column(
           children: [
             Text("DrinkApp", style: Theme.of(context).textTheme.titleLarge,),
-            Text("Very cool landing page", style: Theme.of(context).textTheme.bodyMedium),
+            Text("Página inicial", style: Theme.of(context).textTheme.bodyMedium),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                DrinkButton(text: 'Register', onPressed: _onRegister),
+                DrinkButton(text: 'Registrar', onPressed: _onRegister),
                 SizedBox(width: 16),
-                DrinkButton(text: 'Login', onPressed: _onLogin),
+                DrinkButton(text: 'Entrar', onPressed: _onLogin),
               ],
             ),
           ]
