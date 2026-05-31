@@ -1,4 +1,5 @@
 import 'package:drink_app_flutter/model/drink.dart';
+import 'package:drink_app_flutter/model/network/client.dart';
 import 'package:drink_app_flutter/model/network/drink_service.dart';
 import 'package:drink_app_flutter/routes.dart';
 import 'package:drink_app_flutter/view/default_view.dart';
@@ -16,10 +17,17 @@ class DrinkDetailsView extends StatefulWidget {
 
 class _DrinkDetailsViewState extends State<DrinkDetailsView> {
   Drink? _drink;
-  bool _isOwner = true; //! TO-DO: Adicionar a lógica para verificar se o drink pertence ao usuário logado
+  bool _isOwner = false;
   bool _loading = false;
   bool _hasError = false;
   String? _errorMessage;
+
+  bool _checkIsOwner(Drink drink) {
+    final currentUserId = context.read<ApiClient>().userId;
+    return drink.userId != null &&
+        currentUserId != null &&
+        drink.userId == currentUserId;
+  }
 
   @override
   void initState() {
@@ -39,6 +47,7 @@ class _DrinkDetailsViewState extends State<DrinkDetailsView> {
       if (!mounted) return;
       setState(() {
         _drink = drink;
+        _isOwner = _checkIsOwner(drink);
       });
     }).catchError((error) {
       if (!mounted) return;
@@ -164,6 +173,7 @@ class _DrinkDetailsViewState extends State<DrinkDetailsView> {
                 if (!mounted) return;
                 setState(() {
                   _drink = drink;
+                  _isOwner = _checkIsOwner(drink);
                 });
               }).whenComplete(() {
                 if (!mounted) return;
