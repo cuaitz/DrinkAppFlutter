@@ -1,4 +1,5 @@
 import 'package:drink_app_flutter/model/network/client.dart';
+import 'package:drink_app_flutter/model/user.dart';
 
 class AuthService {
   final ApiClient client;
@@ -24,5 +25,10 @@ class AuthService {
 
     final token = res.data['token'];
     client.setToken(token);
+  }
+
+  Future<User> me() async {
+    final res = await client.dio.get('/api/users/me');
+    return User.fromJson(res.data);
   }
 }

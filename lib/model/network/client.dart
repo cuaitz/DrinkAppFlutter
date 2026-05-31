@@ -47,7 +47,7 @@ class ApiClient {
 
   }
 
-  void setToken(String newToken) {
+  void setToken(String? newToken) {
     token = newToken;
   }
 }
