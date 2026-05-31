@@ -118,7 +118,7 @@ class _DrinksViewState extends State<DrinksView> {
                       Text('Erro ao buscar drinks: ${_errorMessage ?? ''}'),
                       const SizedBox(height: 12),
                       ElevatedButton(
-                        onPressed: () => getDrinks(),
+                        onPressed: _loading ? null : () => getDrinks(),
                         child: const Text('Tentar novamente'),
                       )
                     ],

@@ -136,7 +136,7 @@ class _DrinkDetailsViewState extends State<DrinkDetailsView> {
               Text('Erro ao carregar detalhes: ${_errorMessage ?? ''}'),
               const SizedBox(height: 12),
               ElevatedButton(
-                onPressed: _loadDrink,
+                onPressed: _loading ? null : _loadDrink,
                 child: const Text('Tentar novamente'),
               )
             ],

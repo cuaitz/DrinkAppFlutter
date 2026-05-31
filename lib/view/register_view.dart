@@ -18,11 +18,14 @@ class _RegisterViewState extends State<RegisterView> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
+  bool _loading = false;
 
   void _onRegister() {
-    String email = _emailController.text;
-    String password = _passwordController.text;
-    String name = _nameController.text;
+    if (_loading) return;
+    final String email = _emailController.text;
+    final String password = _passwordController.text;
+    final String name = _nameController.text;
+    setState(() { _loading = true; });
 
     context.read<AuthService>().register(email, password, name).then((value) {
       if (mounted) {
@@ -37,6 +40,9 @@ class _RegisterViewState extends State<RegisterView> {
           SnackBar(content: Text("Erro ao registrar: $error")),
         );
       }
+    }).whenComplete(() {
+      if (!mounted) return;
+      setState(() { _loading = false; });
     });
   }
 
@@ -63,7 +69,7 @@ class _RegisterViewState extends State<RegisterView> {
               controller: _passwordController,
               obscureText: true,
             ),
-            DrinkButton(text: 'Registrar', onPressed: _onRegister)
+            DrinkButton(text: 'Registrar', onPressed: _onRegister, isLoading: _loading)
           ]
         )
       ),

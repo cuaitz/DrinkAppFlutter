@@ -17,11 +17,14 @@ class LoginView extends StatefulWidget {
 class _LoginViewState extends State<LoginView> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool _loading = false;
 
   void _onLogin() {
-    String email = _emailController.text;
-    String password = _passwordController.text;
-    
+    if (_loading) return;
+    final String email = _emailController.text;
+    final String password = _passwordController.text;
+    setState(() { _loading = true; });
+
     context.read<AuthService>().login(email, password).then((value) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -35,6 +38,9 @@ class _LoginViewState extends State<LoginView> {
           SnackBar(content: Text("Erro ao fazer login: $error")),
         );
       }
+    }).whenComplete(() {
+      if (!mounted) return;
+      setState(() { _loading = false; });
     });
   }
 
@@ -57,7 +63,7 @@ class _LoginViewState extends State<LoginView> {
               controller: _passwordController,
               obscureText: true,
             ),
-            DrinkButton(text: 'Entrar', onPressed: _onLogin)
+            DrinkButton(text: 'Entrar', onPressed: _onLogin, isLoading: _loading)
           ]
         )
       ),

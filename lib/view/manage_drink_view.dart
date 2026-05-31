@@ -239,31 +239,33 @@ class _ManageDrinkViewState extends State<ManageDrinkView> {
               Text('Erro ao carregar drink: ${_errorMessage ?? ''}'),
               const SizedBox(height: 12),
               ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    _loading = true;
-                    _hasError = false;
-                    _errorMessage = null;
-                  });
-                  _getDrink(widget.drinkId!).then((drink) {
-                    if (!mounted) return;
-                    setState(() {
-                      _drink = drink;
-                      updateFields();
-                    });
-                  }).catchError((error) {
-                    if (!mounted) return;
-                    setState(() {
-                      _hasError = true;
-                      _errorMessage = error.toString();
-                    });
-                  }).whenComplete(() {
-                    if (!mounted) return;
-                    setState(() {
-                      _loading = false;
-                    });
-                  });
-                },
+                  onPressed: _loading
+                      ? null
+                      : () {
+                          setState(() {
+                            _loading = true;
+                            _hasError = false;
+                            _errorMessage = null;
+                          });
+                          _getDrink(widget.drinkId!).then((drink) {
+                            if (!mounted) return;
+                            setState(() {
+                              _drink = drink;
+                              updateFields();
+                            });
+                          }).catchError((error) {
+                            if (!mounted) return;
+                            setState(() {
+                              _hasError = true;
+                              _errorMessage = error.toString();
+                            });
+                          }).whenComplete(() {
+                            if (!mounted) return;
+                            setState(() {
+                              _loading = false;
+                            });
+                          });
+                        },
                 child: const Text('Tentar novamente'),
               )
             ],

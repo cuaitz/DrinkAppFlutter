@@ -82,7 +82,7 @@ class _MyProfileViewState extends State<MyProfileView> {
               Text('Erro ao carregar perfil: ${_errorMessage ?? ''}'),
               const SizedBox(height: 12),
               ElevatedButton(
-                onPressed: _loadProfile,
+                onPressed: _loading ? null : _loadProfile,
                 child: const Text('Tentar novamente'),
               )
             ],
