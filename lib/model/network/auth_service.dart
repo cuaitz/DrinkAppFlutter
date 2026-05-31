@@ -12,8 +12,8 @@ class AuthService {
       'password': password,
     });
 
-    final token = res.data['token'];
-    client.setToken(token);
+    final data = res.data as Map<String, dynamic>;
+    client.setAuth(data['token'], data['id']);
   }
 
   Future<void> register(String email, String password, String name) async {
@@ -23,8 +23,8 @@ class AuthService {
       'name': name,
     });
 
-    final token = res.data['token'];
-    client.setToken(token);
+    final data = res.data as Map<String, dynamic>;
+    client.setAuth(data['token'], data['id']);
   }
 
   Future<User> me() async {

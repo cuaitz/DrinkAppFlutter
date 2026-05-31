@@ -240,7 +240,6 @@ class _ManageDrinkViewState extends State<ManageDrinkView> {
               const SizedBox(height: 12),
               ElevatedButton(
                 onPressed: () {
-                  // retry
                   setState(() {
                     _loading = true;
                     _hasError = false;

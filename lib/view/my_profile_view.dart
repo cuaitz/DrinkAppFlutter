@@ -22,7 +22,7 @@ class _MyProfileViewState extends State<MyProfileView> {
 
   void _onLogout() {
     try {
-      context.read<ApiClient>().setToken(null);
+      context.read<ApiClient>().setAuth(null, null);
     } catch (_) {}
 
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Logout realizado')));

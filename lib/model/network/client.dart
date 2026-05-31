@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 class ApiClient {
   late final Dio dio;
   String? token;
+  String? userId;
 
   ApiClient() {
     dio = Dio(
@@ -32,6 +33,7 @@ class ApiClient {
           print("Request error: ${e.response?.statusCode} ${e.response?.data}");
           if (e.response?.statusCode == 401) {
             token = null;
+            userId = null;
             scaffoldMessengerKey.currentState?.showSnackBar(
               const SnackBar(
                 content: Text('Sessão expirada. Faça login novamente.'),
@@ -47,7 +49,8 @@ class ApiClient {
 
   }
 
-  void setToken(String? newToken) {
+  void setAuth(String? newToken, String? newUserId) {
     token = newToken;
+    userId = newUserId;
   }
 }
