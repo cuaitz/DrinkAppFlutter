@@ -100,7 +100,7 @@ class _DrinksViewState extends State<DrinksView> {
             children: [
               DrinkTextField(
                 controller: _filterController,
-                hintText: "Filtrar por nome, tags, categoria, ingredientes, etc.",
+                hintText: "Filtrar por nome, categoria ou ingredientes...",
                 labelText: "Pesquisar bebidas",
                 onChanged: _onFilterChanged,
               ),
