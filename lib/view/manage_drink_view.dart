@@ -1,4 +1,5 @@
-import 'dart:io';
+import 'dart:convert';
+import 'dart:typed_data';
 import 'package:drink_app_flutter/model/drink.dart';
 import 'package:drink_app_flutter/model/drink_ingredient.dart';
 import 'package:drink_app_flutter/model/network/drink_service.dart';
@@ -20,7 +21,8 @@ class ManageDrinkView extends StatefulWidget {
 
 class _ManageDrinkViewState extends State<ManageDrinkView> {
   Drink? _drink;
-  File? _pickedImage;
+  Uint8List? _pickedImageBytes;
+  String? _pickedImagePath;
   bool _loading = false;
   bool _saving = false;
   bool _hasError = false;
@@ -38,9 +40,18 @@ class _ManageDrinkViewState extends State<ManageDrinkView> {
   Future<void> _pickImage() async {
     final XFile? image = await _imagePicker.pickImage(source: ImageSource.gallery);
     if (image != null) {
-      setState(() {
-        _pickedImage = File(image.path);
-      });
+      try {
+        final bytes = await image.readAsBytes();
+        setState(() {
+          _pickedImageBytes = bytes;
+          _pickedImagePath = image.path;
+        });
+      } catch (e) {
+        setState(() {
+          _pickedImageBytes = null;
+          _pickedImagePath = null;
+        });
+      }
     }
   }
 
@@ -49,25 +60,22 @@ class _ManageDrinkViewState extends State<ManageDrinkView> {
 
     Widget content;
 
-    if (_pickedImage != null) {
-      // Essa checagem só tá aqui pq eu testo as coisas pelo PC
-      if (kIsWeb) {
-        content = Image.network(
-          _pickedImage!.path,
-          fit: BoxFit.cover
-        );
-      } else {
-        content = Image.file(
-          _pickedImage!,
-          fit: BoxFit.cover
-        );
-      }
-    } else if (_drink?.strDrinkThumb != null && _drink!.strDrinkThumb!.isNotEmpty) {
-      content = Image.network(
-        _drink!.strDrinkThumb!,
+    if (_pickedImageBytes != null) {
+      content = Image.memory(
+        _pickedImageBytes!,
         fit: BoxFit.cover,
-        errorBuilder: (_, _, _) => Icon(Icons.local_drink_outlined, size: size),
+        errorBuilder: (_, __, ___) => Icon(Icons.local_drink_outlined, size: size),
       );
+    } else if (_drink?.strDrinkThumb != null && _drink!.strDrinkThumb!.isNotEmpty) {
+      try {
+        content = Image.memory(
+          base64.decode(_drink!.strDrinkThumb!.contains(',') ? _drink!.strDrinkThumb!.split(',').last : _drink!.strDrinkThumb!),
+          fit: BoxFit.cover,
+          errorBuilder: (_, _, _) => Icon(Icons.local_drink_outlined, size: size),
+        );
+      } catch (e) {
+        content = Icon(Icons.local_drink_outlined, size: size);
+      }
     } else {
       content = Icon(Icons.local_drink_outlined, size: size);
     }
@@ -108,6 +116,38 @@ class _ManageDrinkViewState extends State<ManageDrinkView> {
   }
 
   void _saveDrink() {
+    String? thumb;
+    if (_pickedImageBytes != null) {
+      String mime = 'image/jpeg';
+      if (_pickedImagePath != null) {
+        final ext = _pickedImagePath!.split('.').last.toLowerCase();
+        switch (ext) {
+          case 'png':
+            mime = 'image/png';
+            break;
+          case 'jpg':
+          case 'jpeg':
+            mime = 'image/jpeg';
+            break;
+          case 'gif':
+            mime = 'image/gif';
+            break;
+          case 'webp':
+            mime = 'image/webp';
+            break;
+          case 'bmp':
+            mime = 'image/bmp';
+            break;
+          default:
+            mime = 'image/jpeg';
+        }
+      }
+      final b64 = base64.encode(_pickedImageBytes!);
+      thumb = 'data:$mime;base64,$b64';
+    } else {
+      thumb = _drink?.strDrinkThumb;
+    }
+
     final Drink drink = Drink(
       strDrink: _nameController.text,
       strCategory: _categoryController.text,
@@ -123,7 +163,7 @@ class _ManageDrinkViewState extends State<ManageDrinkView> {
           measure: measure,
         );
       }).whereType<DrinkIngredient>().toList(),
-      strDrinkThumb: _pickedImage != null ? _pickedImage!.path : _drink?.strDrinkThumb,
+      strDrinkThumb: thumb,
     );
 
     setState(() {

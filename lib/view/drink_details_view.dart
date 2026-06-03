@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:drink_app_flutter/model/drink.dart';
 import 'package:drink_app_flutter/model/network/client.dart';
 import 'package:drink_app_flutter/model/network/drink_service.dart';
@@ -73,11 +75,16 @@ class _DrinkDetailsViewState extends State<DrinkDetailsView> {
     Widget content;
 
     if (_drink?.strDrinkThumb != null && _drink!.strDrinkThumb!.isNotEmpty) {
-      content = Image.network(
-        _drink!.strDrinkThumb!,
-        fit: BoxFit.cover,
-        errorBuilder: (_, _, _) => Icon(Icons.local_drink_outlined, size: size),
-      );
+      try {
+        final imageBytes = base64.decode(_drink!.strDrinkThumb!.contains(',') ? _drink!.strDrinkThumb!.split(',').last : _drink!.strDrinkThumb!);
+        content = Image.memory(
+          imageBytes,
+          fit: BoxFit.cover,
+          errorBuilder: (_, _, _) => Icon(Icons.local_drink_outlined, size: size),
+        );
+      } catch (e) {
+        content = Icon(Icons.local_drink_outlined, size: size);
+      }
     } else {
       content = Icon(Icons.local_drink_outlined, size: size);
     }
